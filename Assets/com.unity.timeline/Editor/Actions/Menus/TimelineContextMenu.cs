@@ -190,7 +190,12 @@ namespace UnityEditor.Timeline
         {
             var markerTypes = TypeUtility.GetBuiltInMarkerTypes().Union(TypeUtility.GetUserMarkerTypes());
             if (track != null)
-                markerTypes = markerTypes.Where(x => TypeUtility.DoesTrackSupportMarkerType(track, x));
+            {
+                if (track is MarkerTrack)
+                    markerTypes = markerTypes.Where(x => TypeUtility.DoesTrackSupportMarkerType(track, x));
+                else
+                    markerTypes = markerTypes.Where(x => TypeUtility.DoesTrackSupportTrackType(track, x));
+            }
 
             menu.AddSeparator(string.Empty);
             AddMarkerMenuCommands(menu, markerTypes, command, enabled);

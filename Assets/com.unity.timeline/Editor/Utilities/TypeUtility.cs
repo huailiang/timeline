@@ -269,15 +269,14 @@ namespace UnityEditor.Timeline
             return GetAllMarkerTypes().Where(x => x.Assembly.Equals(typeof(TimelineAsset).Assembly));
         }
 
-        //public static bool DoesTrackSupportTrackType(TrackAsset track, Type type)
-        //{
-        //    if (track.supportsNotifications)
-        //    {
-        //        return type != typeof(JumpSignalEmmiter) && type != typeof(SlowSignalEmitter);
-        //    }
-
-        //    return !typeof(INotification).IsAssignableFrom(type);
-        //}
+        public static bool DoesTrackSupportTrackType(TrackAsset track, Type type)
+        {
+            if (track.supportsNotifications)
+            {
+                return type != typeof(JumpSignalEmmiter) && type != typeof(SlowSignalEmitter);
+            }
+            return !typeof(INotification).IsAssignableFrom(type);
+        }
         
         public static bool DoesTrackSupportMarkerType(TrackAsset track, Type type)
         {
