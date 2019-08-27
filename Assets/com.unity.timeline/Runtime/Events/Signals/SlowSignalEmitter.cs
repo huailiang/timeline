@@ -6,6 +6,7 @@ namespace UnityEngine.Timeline
 
     [Serializable]
     [CustomStyle("SlowSignalEmitter")]
+    [MarkerAttribute(TrackType.MARKER)]
     public class SlowSignalEmitter : Marker, INotification, INotificationOptionProvider
     {
         [SerializeField] bool m_Retroactive;

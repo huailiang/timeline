@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
 
-public class ArchorBehaviour : PlayableBehaviour
+public class AnchorBehaviour : PlayableBehaviour
 {
 
     AnimationCurve[] clips_pos;

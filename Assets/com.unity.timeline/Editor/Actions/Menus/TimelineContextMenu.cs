@@ -191,10 +191,7 @@ namespace UnityEditor.Timeline
             var markerTypes = TypeUtility.GetBuiltInMarkerTypes().Union(TypeUtility.GetUserMarkerTypes());
             if (track != null)
             {
-                if (track is MarkerTrack)
-                    markerTypes = markerTypes.Where(x => TypeUtility.DoesTrackSupportMarkerType(track, x));
-                else
-                    markerTypes = markerTypes.Where(x => TypeUtility.DoesTrackSupportTrackType(track, x));
+                markerTypes = markerTypes.Where(x => TypeUtility.DoesTrackSupportMarkerType(track, x));
             }
 
             menu.AddSeparator(string.Empty);
@@ -263,7 +260,7 @@ namespace UnityEditor.Timeline
             var disabled = (parentTrack != null && parentTrack.lockedInHierarchy) || state.editSequence.isReadOnly;
 
             bool addenu = true;
-            var attr = Attribute.GetCustomAttribute(type, typeof(SubTrackAttribute)) as SubTrackAttribute;
+            var attr = Attribute.GetCustomAttribute(type, typeof(TrackAttribute)) as TrackAttribute;
             if (attr != null) addenu = !attr.onlyInSub;
 
             if (addenu)

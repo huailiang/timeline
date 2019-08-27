@@ -113,7 +113,7 @@ namespace UnityEditor.Timeline
                     }, track);
                     menu.AddItem(Styles.AddTransformTrackMenuItem, false, parentTrack =>
                     {
-                        AddSubTrack(state, typeof(ArchorTrack), "ArchorTrack " + track.GetChildTracks().Count().ToString(), track);
+                        AddSubTrack(state, typeof(AnchorTrack), "ArchorTrack " + track.GetChildTracks().Count().ToString(), track);
                     }, track);
                     menu.AddItem(Styles.AddBoneFxTrackMenuItem, false, parentTrack =>
                     {

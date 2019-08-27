@@ -7,6 +7,7 @@ namespace UnityEngine.Timeline
 
     [Serializable]
     [CustomStyle("JumpSignalEmmiter")]
+    [MarkerAttribute(TrackType.MARKER)]
     public class JumpSignalEmmiter : Marker, INotification, INotificationOptionProvider
     {
         [SerializeField] bool m_EmitOnce;

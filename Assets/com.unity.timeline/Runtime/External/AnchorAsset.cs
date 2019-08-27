@@ -2,7 +2,7 @@
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class ArchorAsset : PlayableAsset
+public class AnchorAsset : PlayableAsset
 {
     
     [SerializeField] AnimationCurve[] m_Clip_Pos;
@@ -41,9 +41,9 @@ public class ArchorAsset : PlayableAsset
         {
             go = (binding as Animation).gameObject;
         }
-        ArchorBehaviour beha = new ArchorBehaviour();
+        AnchorBehaviour beha = new AnchorBehaviour();
         beha.Set(clip_pos, clip_rot, go);
-        return ScriptPlayable<ArchorBehaviour>.Create(graph, beha);
+        return ScriptPlayable<AnchorBehaviour>.Create(graph, beha);
     }
 
 }

@@ -6,6 +6,7 @@ namespace UnityEngine.Timeline
 
     [Serializable]
     [CustomStyle("TransforSignalmEmitter")]
+    [Marker(TrackType.ANCHOR | TrackType.MARKER)]
     public class AnchorSignalEmitter : Marker
     {
         [SerializeField] Vector3 m_Position = Vector3.zero;
@@ -26,5 +27,4 @@ namespace UnityEngine.Timeline
         }
 
     }
-
 }

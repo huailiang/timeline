@@ -6,23 +6,23 @@ using UnityEditor.Timeline;
 namespace UnityEngine.Timeline
 {
 
-    [CustomTimelineEditor(typeof(ArchorAsset))]
+    [CustomTimelineEditor(typeof(AnchorAsset))]
     class ArchorAssetEditor : ClipEditor
     {
 
         Color32 backg = new Color32(1, 1, 1, 0);
         Color[] cSeq = { Color.red, Color.green, Color.blue };
-        ArchorTrack target;
+        AnchorTrack target;
 
 
         public override void DrawBackground(TimelineClip clip, ClipBackgroundRegion region)
         {
-            ArchorAsset asset = clip.asset as ArchorAsset;
+            AnchorAsset asset = clip.asset as AnchorAsset;
             Rect rect = region.position;
             TrackAsset track = clip.parentTrack;
-            if (target == null && track is ArchorTrack)
+            if (target == null && track is AnchorTrack)
             {
-                target = track as ArchorTrack;
+                target = track as AnchorTrack;
             }
             if (target != null)
             {
