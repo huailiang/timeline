@@ -1,0 +1,50 @@
+JumpSignalEmmiter
+{
+	width: 18px;
+    height: 18px;
+	background-image: resource("Assets/Editor/StyleSheets/ico/jumpTo_collapsed.png");
+}
+
+JumpSignalEmmiter:checked
+{
+	background-image: resource("Assets/Editor/StyleSheets/ico/jumpTo_normal.png");
+}
+
+JumpSignalEmmiter:focus:checked
+{
+	background-image: resource("Assets/Editor/StyleSheets/ico/jumpTo_selected.png");
+}
+
+SlowSignalEmitter
+{
+	width: 18px;
+    height: 18px;
+	background-image: resource("Assets/Editor/StyleSheets/ico/slow_collapsed.png");
+}
+
+SlowSignalEmitter:checked
+{
+	background-image: resource("Assets/Editor/StyleSheets/ico/slow_normal.png");
+}
+
+SlowSignalEmitter:focus:checked
+{
+	background-image: resource("Assets/Editor/StyleSheets/ico/slow_selected.png");
+}
+
+TransforSignalmEmitter
+{
+	width: 18px;
+    height: 18px;
+	background-image: resource("Assets/Editor/StyleSheets/ico/sty_collapsed.png");
+}
+
+TransforSignalmEmitter:checked
+{
+	background-image: resource("Assets/Editor/StyleSheets/ico/sty_normal.png");
+}
+
+TransforSignalmEmitter:focus:checked
+{
+	background-image: resource("Assets/Editor/StyleSheets/ico/sty_selected.png");
+}
