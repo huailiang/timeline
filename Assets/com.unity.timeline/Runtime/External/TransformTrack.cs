@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 [TrackClipType(typeof(TransformAsset))]
@@ -10,7 +9,8 @@ public class TransformTrack : TrackAsset
 {
 
     List<TransforSignalEmitter> signals;
-    AnimationCurve[] curves;
+    AnimationCurve[] m_curves_pos = null;
+    AnimationCurve[] m_curves_rot = null;
 
     protected override void OnAfterTrackDeserialize()
     {
@@ -40,32 +40,43 @@ public class TransformTrack : TrackAsset
         CreateClips();
     }
 
+    private void ClearCurves(ref AnimationCurve[] curves)
+    {
+        if (curves == null || curves.Length == 0)
+        {
+            curves = new AnimationCurve[3];
+            for (int i = 0; i < 3; i++)
+            {
+                curves[i] = new AnimationCurve();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                curves[i].keys = null;
+            }
+        }
+    }
+
 
     private void CreateClips()
     {
         if (signals != null && signals.Count > 0)
         {
-            if (curves == null)
-            {
-                curves = new AnimationCurve[3];
-                for (int i = 0; i < 3; i++)
-                {
-                    curves[i] = new AnimationCurve();
-                }
-            }
-            else
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    curves[i].keys = null;
-                }
-            }
+            ClearCurves(ref m_curves_pos);
+            ClearCurves(ref m_curves_rot);
             for (int i = 0; i < signals.Count; i++)
             {
                 TransforSignalEmitter sign = signals[i];
-                curves[0].AddKey((float)sign.time, sign.position.x);
-                curves[1].AddKey((float)sign.time, sign.position.y);
-                curves[2].AddKey((float)sign.time, sign.position.z);
+                float time = (float)sign.time;
+                m_curves_pos[0].AddKey(time, sign.position.x);
+                m_curves_pos[1].AddKey(time, sign.position.y);
+                m_curves_pos[2].AddKey(time, sign.position.z);
+
+                m_curves_rot[0].AddKey(time, sign.rotation.x);
+                m_curves_rot[1].AddKey(time, sign.rotation.y);
+                m_curves_rot[2].AddKey(time, sign.rotation.z);
             }
             var clips = GetClips();
             if (clips != null)
@@ -78,7 +89,8 @@ public class TransformTrack : TrackAsset
                 else
                 {
                     TransformAsset asset = xclip.asset as TransformAsset;
-                    asset.clip = curves;
+                    asset.clip_pos = m_curves_pos;
+                    asset.clip_rot = m_curves_rot;
                     BindObj(asset);
                 }
             }

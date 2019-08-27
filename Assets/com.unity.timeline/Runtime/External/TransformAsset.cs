@@ -6,15 +6,22 @@ public class TransformAsset : PlayableAsset
 {
 
 
-    [SerializeField] AnimationCurve[] m_Clip;
+    [SerializeField] AnimationCurve[] m_Clip_Pos;
+    [SerializeField] AnimationCurve[] m_Clip_Rot;
     [SerializeField] TrackAsset m_Parent;
 
-    public AnimationCurve[] clip
+    public AnimationCurve[] clip_pos
     {
-        get { return m_Clip; }
-        set { m_Clip = value; }
+        get { return m_Clip_Pos; }
+        set { m_Clip_Pos = value; }
     }
 
+
+    public AnimationCurve[] clip_rot
+    {
+        get { return m_Clip_Rot; }
+        set { m_Clip_Rot = value; }
+    }
 
     public TrackAsset parent
     {
@@ -36,7 +43,7 @@ public class TransformAsset : PlayableAsset
             go = (binding as Animation).gameObject;
         }
         TransformBehaviour beha = new TransformBehaviour();
-        beha.Set(clip, go);
+        beha.Set(clip_pos, clip_rot, go);
         return ScriptPlayable<TransformBehaviour>.Create(graph, beha);
     }
 

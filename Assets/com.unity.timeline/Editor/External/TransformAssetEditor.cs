@@ -31,7 +31,7 @@ namespace UnityEngine.Timeline
             if (asset != null)
             {
                 var quantizedRect = new Rect(Mathf.Ceil(rect.x), Mathf.Ceil(rect.y), Mathf.Ceil(rect.width), Mathf.Ceil(rect.height));
-                AnimationCurve[] curves = asset.clip;
+                AnimationCurve[] curves = asset.clip_pos;
                 DrawCurve(rect, curves);
             }
         }
