@@ -78,21 +78,21 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
             {
                 AnimationTrack track = pb.sourceObject as AnimationTrack;
                 int cnt = track.GetMarkerCount();
-                var tfTracks = new List<TransforSignalEmitter>();
+                var tfTracks = new List<AnchorSignalEmitter>();
                 var marks = track.GetMarkers().GetEnumerator();
                 while (marks.MoveNext())
                 {
                     IMarker mark = marks.Current;
-                    if (mark is TransforSignalEmitter)
+                    if (mark is AnchorSignalEmitter)
                     {
-                        tfTracks.Add(mark as TransforSignalEmitter);
+                        tfTracks.Add(mark as AnchorSignalEmitter);
                     }
                 }
                 marks.Dispose();
 
                 for (int i = 0; i < tfTracks.Count; i++)
                 {
-                    TransforSignalEmitter sign = tfTracks[i];
+                    AnchorSignalEmitter sign = tfTracks[i];
                     Debug.Log(sign.time + " " + sign.position);
                 }
             }

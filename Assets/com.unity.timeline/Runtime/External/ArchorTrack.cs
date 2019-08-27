@@ -9,7 +9,7 @@ using UnityEngine.Timeline;
 public class ArchorTrack : TrackAsset
 {
 
-    List<TransforSignalEmitter> signals;
+    List<AnchorSignalEmitter> signals;
     AnimationCurve[] m_curves_pos = null;
     AnimationCurve[] m_curves_rot = null;
 
@@ -24,16 +24,16 @@ public class ArchorTrack : TrackAsset
     {
         if (signals == null)
         {
-            signals = new List<TransforSignalEmitter>();
+            signals = new List<AnchorSignalEmitter>();
         }
         else signals.Clear();
         var marks = GetMarkers().GetEnumerator();
         while (marks.MoveNext())
         {
             IMarker mark = marks.Current;
-            if (mark is TransforSignalEmitter)
+            if (mark is AnchorSignalEmitter)
             {
-                signals.Add(mark as TransforSignalEmitter);
+                signals.Add(mark as AnchorSignalEmitter);
             }
         }
         marks.Dispose();
@@ -69,7 +69,7 @@ public class ArchorTrack : TrackAsset
             ClearCurves(ref m_curves_rot);
             for (int i = 0; i < signals.Count; i++)
             {
-                TransforSignalEmitter sign = signals[i];
+                AnchorSignalEmitter sign = signals[i];
                 float time = (float)sign.time;
                 m_curves_pos[0].AddKey(time, sign.position.x);
                 m_curves_pos[1].AddKey(time, sign.position.y);

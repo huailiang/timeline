@@ -5,17 +5,17 @@ using UnityEngine.Timeline;
 
 namespace UnityEditor.Timeline.Signals
 {
-    [CustomEditor(typeof(TransforSignalEmitter))]
+    [CustomEditor(typeof(AnchorSignalEmitter))]
     public class ArchorSignalEditor : Editor
     {
         TrackAsset track;
-        TransforSignalEmitter signal;
+        AnchorSignalEmitter signal;
         Transform bindTf;
 
         private void OnEnable()
         {
             PlayableDirector director = GameObject.FindObjectOfType<PlayableDirector>();
-            signal = target as TransforSignalEmitter;
+            signal = target as AnchorSignalEmitter;
             track = signal.parent.parent as TrackAsset;
             bindTf = ExternalHelp.FetchAttachOfTrack(director, track);
         }
