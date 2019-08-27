@@ -10,17 +10,11 @@ public class TransformTrack : TrackAsset
 {
 
     List<TransforSignalEmitter> signals;
-
-
-    internal override Playable OnCreateClipPlayableGraph(PlayableGraph graph, GameObject go, IntervalTree<RuntimeElement> tree)
-    {
-        return base.OnCreateClipPlayableGraph(graph, go, tree);
-    }
+    AnimationCurve[] curves;
 
     protected override void OnAfterTrackDeserialize()
     {
         base.OnAfterTrackDeserialize();
-        Debug.Log("OnAfterTrackDeserialize");
         OutputTrackinfo();
     }
 
@@ -49,31 +43,44 @@ public class TransformTrack : TrackAsset
 
     private void CreateClips()
     {
-        if (signals != null && signals.Count > 1)
+        if (signals != null && signals.Count > 0)
         {
-            AnimationCurve[] clip = new AnimationCurve[3];
-            for (int i = 0; i < 3; i++)
+            if (curves == null)
             {
-                clip[i] = new AnimationCurve();
+                curves = new AnimationCurve[3];
+                for (int i = 0; i < 3; i++)
+                {
+                    curves[i] = new AnimationCurve();
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    curves[i].keys = null;
+                }
             }
             for (int i = 0; i < signals.Count; i++)
             {
                 TransforSignalEmitter sign = signals[i];
-                clip[0].AddKey((float)sign.time, sign.position.x);
-                clip[1].AddKey((float)sign.time, sign.position.y);
-                clip[2].AddKey((float)sign.time, sign.position.z);
+                curves[0].AddKey((float)sign.time, sign.position.x);
+                curves[1].AddKey((float)sign.time, sign.position.y);
+                curves[2].AddKey((float)sign.time, sign.position.z);
             }
             var clips = GetClips();
-            TimelineClip xclip = clips.First();
-            if (xclip == null)
+            if (clips != null)
             {
-                Debug.LogError("transform clip con't be null");
-            }
-            else
-            {
-                TransformAsset asset = xclip.asset as TransformAsset;
-                asset.clip = clip;
-                BindObj(asset);
+                TimelineClip xclip = clips.FirstOrDefault();
+                if (xclip == null)
+                {
+                    Debug.LogError("transform clip con't be null");
+                }
+                else
+                {
+                    TransformAsset asset = xclip.asset as TransformAsset;
+                    asset.clip = curves;
+                    BindObj(asset);
+                }
             }
         }
     }
@@ -88,10 +95,13 @@ public class TransformTrack : TrackAsset
     public TransformAsset GetAsset()
     {
         var clips = GetClips();
-        TimelineClip xclip = clips.First();
-        if (xclip != null)
+        if (clips.Count() > 0)
         {
-            return xclip.asset as TransformAsset;
+            TimelineClip xclip = clips.FirstOrDefault();
+            if (xclip != null)
+            {
+                return xclip.asset as TransformAsset;
+            }
         }
         return null;
     }

@@ -16,7 +16,7 @@ public class TransformBehaviour : PlayableBehaviour
     public override void PrepareFrame(Playable playable, FrameData info)
     {
         base.PrepareFrame(playable, info);
-        if (clips != null)
+        if (clips != null && clips.Length >= 3)
         {
             float time = (float)(playable.GetTime());
             float x = clips[0].Evaluate(time);

@@ -121,7 +121,7 @@ namespace UnityEngine.Timeline
 
                 return nestCount < attr.levels;
             }
-            return false;
+            return true;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace UnityEditor.Timeline
             public static readonly GUIContent ConvertToInfiniteClipMenuItem = EditorGUIUtility.TrTextContent("Convert to Infinite Clip");
             public static readonly GUIContent ConvertToClipTrackMenuItem = EditorGUIUtility.TrTextContent("Convert To Clip Track");
             public static readonly GUIContent AddOverrideTrackMenuItem = EditorGUIUtility.TrTextContent("Add Override Track");
-
+            public static readonly GUIContent AddTransformTrackMenuItem = EditorGUIUtility.TrTextContent("Add Sub Transform Track");
             public static readonly string TrackOffsetMenuPrefix = L10n.Tr("Track Offsets/");
         }
 
@@ -109,6 +109,10 @@ namespace UnityEditor.Timeline
                     menu.AddItem(Styles.AddOverrideTrackMenuItem, false, parentTrack =>
                     {
                         AddSubTrack(state, typeof(AnimationTrack), "Override " + track.GetChildTracks().Count().ToString(), track);
+                    }, track);
+                    menu.AddItem(Styles.AddTransformTrackMenuItem, false, parentTrack =>
+                    {
+                        AddSubTrack(state, typeof(TransformTrack), "TransformTrack " + track.GetChildTracks().Count().ToString(), track);
                     }, track);
                 }
             }

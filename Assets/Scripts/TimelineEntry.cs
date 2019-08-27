@@ -9,13 +9,11 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
 {
 
     PlayableDirector director;
-    
+
 
     private void Start()
     {
         director = GetComponent<PlayableDirector>();
-        director.time = 3.8d;
-        Debug.Log("duration: " + director.duration);
         ParseTrack();
     }
 
@@ -25,7 +23,7 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
         {
             var output = ScriptPlayableOutput.Create(director.playableGraph, "");
             output.AddNotificationReceiver(this);
-            JumpSignalEmmiter sign = new JumpSignalEmmiter();
+            JumpSignalEmmiter sign = ScriptableObject.CreateInstance<JumpSignalEmmiter>();
             sign.jumpTime = 0;
             output.PushNotification(Playable.Null, sign);
         }
@@ -79,7 +77,6 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
             if (pb.sourceObject is AnimationTrack)
             {
                 AnimationTrack track = pb.sourceObject as AnimationTrack;
-                //TransformTrack ptck = new TransformTrack(track);
                 int cnt = track.GetMarkerCount();
                 var tfTracks = new List<TransforSignalEmitter>();
                 var marks = track.GetMarkers().GetEnumerator();
@@ -101,7 +98,5 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
             }
         }
     }
-
-
 
 }
