@@ -6,7 +6,7 @@ using UnityEngine.Timeline;
 namespace UnityEditor.Timeline.Signals
 {
     [CustomEditor(typeof(TransforSignalEmitter))]
-    public class TransforSignalEditor : Editor
+    public class ArchorSignalEditor : Editor
     {
         TrackAsset track;
         TransforSignalEmitter signal;
@@ -17,15 +17,7 @@ namespace UnityEditor.Timeline.Signals
             PlayableDirector director = GameObject.FindObjectOfType<PlayableDirector>();
             signal = target as TransforSignalEmitter;
             track = signal.parent.parent as TrackAsset;
-            var binding = director.GetGenericBinding(track);
-            if (binding is Animator)
-            {
-                bindTf = (binding as Animator).transform;
-            }
-            else if (binding is Animation)
-            {
-                bindTf = (binding as Animation).transform;
-            }
+            bindTf = ExternalHelp.FetchAttachOfTrack(director, track);
         }
 
         public override void OnInspectorGUI()
@@ -48,5 +40,4 @@ namespace UnityEditor.Timeline.Signals
         }
 
     }
-
 }

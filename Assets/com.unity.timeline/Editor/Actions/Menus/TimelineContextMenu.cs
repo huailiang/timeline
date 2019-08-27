@@ -261,7 +261,13 @@ namespace UnityEditor.Timeline
 
             var name = category + TimelineHelpers.GetTrackMenuName(type);
             var disabled = (parentTrack != null && parentTrack.lockedInHierarchy) || state.editSequence.isReadOnly;
-            AddCommandToMenu(menu, name, lastMethod, type, !disabled);
+
+            bool addenu = true;
+            var attr = Attribute.GetCustomAttribute(type, typeof(SubTrackAttribute)) as SubTrackAttribute;
+            if (attr != null) addenu = !attr.onlyInSub;
+
+            if (addenu)
+                AddCommandToMenu(menu, name, lastMethod, type, !disabled);
         }
 
         static void AddCommandToMenu(GenericMenu menu, string name, GenericMenu.MenuFunction func = null, bool enabled = true, bool on = false)

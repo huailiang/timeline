@@ -2,13 +2,12 @@
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class TransformAsset : PlayableAsset
+public class ArchorAsset : PlayableAsset
 {
-
-
+    
     [SerializeField] AnimationCurve[] m_Clip_Pos;
     [SerializeField] AnimationCurve[] m_Clip_Rot;
-    [SerializeField] TrackAsset m_Parent;
+    [SerializeField] TrackAsset m_Track;
 
     public AnimationCurve[] clip_pos
     {
@@ -23,16 +22,16 @@ public class TransformAsset : PlayableAsset
         set { m_Clip_Rot = value; }
     }
 
-    public TrackAsset parent
+    public TrackAsset track
     {
-        get { return m_Parent; }
-        set { m_Parent = value; }
+        get { return m_Track; }
+        set { m_Track = value; }
     }
 
     public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
     {
         var director = owner.GetComponent<PlayableDirector>();
-        var binding = director.GetGenericBinding(parent);
+        var binding = director.GetGenericBinding(track);
         GameObject go = null;
         if (binding is Animator)
         {
@@ -42,9 +41,9 @@ public class TransformAsset : PlayableAsset
         {
             go = (binding as Animation).gameObject;
         }
-        TransformBehaviour beha = new TransformBehaviour();
+        ArchorBehaviour beha = new ArchorBehaviour();
         beha.Set(clip_pos, clip_rot, go);
-        return ScriptPlayable<TransformBehaviour>.Create(graph, beha);
+        return ScriptPlayable<ArchorBehaviour>.Create(graph, beha);
     }
 
 }

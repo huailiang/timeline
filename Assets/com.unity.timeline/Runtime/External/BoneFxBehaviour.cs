@@ -11,24 +11,15 @@ public class BoneFxBehaviour : PlayableBehaviour
     Transform _target;
     Transform _fx_root;
     GameObject _fx_obj;
-    Vector3 _pos;
-    int _bindTrack;
+    Vector3 _pos, _rot,_scale;
 
-    public void Set(PlayableDirector dir, string prefab, string fxpath, Vector3 pos)
+    public void Set(PlayableDirector dir, string prefab, string fxpath, Vector3 pos, Vector3 rot, Vector3 scale)
     {
         _director = dir;
         _prefab = prefab;
         _pos = pos;
-        var list = dir.playableAsset.outputs;
-        int i = 0;
-        foreach (var item in list)
-        {
-            if (i == _bindTrack)
-            {
-                _bindPb = item;
-            }
-            i++;
-        }
+        _rot = rot;
+        _scale = scale;
         _fx_path = fxpath;
 
     }
@@ -70,8 +61,8 @@ public class BoneFxBehaviour : PlayableBehaviour
                 _particles = _fx_obj.GetComponentsInChildren<ParticleSystem>();
                 _fx_obj.transform.parent = _fx_root;
                 _fx_obj.transform.localPosition = _pos;
-                _fx_obj.transform.localRotation = Quaternion.identity;
-                _fx_obj.transform.localScale = Vector3.one;
+                _fx_obj.transform.localRotation = Quaternion.Euler(_rot);
+                _fx_obj.transform.localScale = _scale;
                 _fx_obj.name = hash.ToString();
             }
         }

@@ -3,9 +3,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Timeline;
 
-[TrackClipType(typeof(TransformAsset))]
+[TrackClipType(typeof(ArchorAsset))]
 [TrackColor(0.76f, 0.44f, 0.24f)]
-public class TransformTrack : TrackAsset
+[SubTrack(true)]
+public class ArchorTrack : TrackAsset
 {
 
     List<TransforSignalEmitter> signals;
@@ -88,7 +89,7 @@ public class TransformTrack : TrackAsset
                 }
                 else
                 {
-                    TransformAsset asset = xclip.asset as TransformAsset;
+                    ArchorAsset asset = xclip.asset as ArchorAsset;
                     asset.clip_pos = m_curves_pos;
                     asset.clip_rot = m_curves_rot;
                     BindObj(asset);
@@ -97,14 +98,14 @@ public class TransformTrack : TrackAsset
         }
     }
 
-    private void BindObj(TransformAsset asset)
+    private void BindObj(ArchorAsset asset)
     {
         var track = parent as TrackAsset;
-        asset.parent = track;
+        asset.track = track;
     }
 
 
-    public TransformAsset GetAsset()
+    public ArchorAsset GetAsset()
     {
         var clips = GetClips();
         if (clips.Count() > 0)
@@ -112,7 +113,7 @@ public class TransformTrack : TrackAsset
             TimelineClip xclip = clips.FirstOrDefault();
             if (xclip != null)
             {
-                return xclip.asset as TransformAsset;
+                return xclip.asset as ArchorAsset;
             }
         }
         return null;

@@ -9,7 +9,7 @@ using UnityEditor;
 
 [TrackColor(0.66f, 0.134f, 0.644f)]
 [TrackClipType(typeof(BoneFxAsset))]
-[TrackBindingType(typeof(GameObject))]
+[SubTrack(true)]
 public class BoneFxTrack : TrackAsset
 {
 
@@ -17,6 +17,9 @@ public class BoneFxTrack : TrackAsset
     {
         clip.duration = 2f;
         base.OnCreateClip(clip);
+        BoneFxAsset asset = clip.asset as BoneFxAsset;
+        asset.track = this.parent as TrackAsset;
+        Debug.Log("animation:" + (asset.track is AnimationTrack));
     }
 
     public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
