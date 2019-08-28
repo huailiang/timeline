@@ -27,17 +27,18 @@ public class AnchorTrack : TrackAsset
             signals = new List<AnchorSignalEmitter>();
         }
         else signals.Clear();
+        
         var marks = GetMarkers().GetEnumerator();
         while (marks.MoveNext())
         {
             IMarker mark = marks.Current;
             if (mark is AnchorSignalEmitter)
             {
-                signals.Add(mark as AnchorSignalEmitter);
+                AnchorSignalEmitter anchor = mark as AnchorSignalEmitter;
+                signals.Add(anchor);
             }
         }
         marks.Dispose();
-
         CreateClips();
     }
 
@@ -85,7 +86,7 @@ public class AnchorTrack : TrackAsset
                 TimelineClip xclip = clips.FirstOrDefault();
                 if (xclip == null)
                 {
-                    Debug.LogError("transform clip con't be null");
+                    Debug.LogWarning("transform clip con't be null");
                 }
                 else
                 {

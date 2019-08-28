@@ -470,7 +470,7 @@ MonoBehaviour:
   m_Name: Transfor Signal Emitter
   m_EditorClassIdentifier: 
   m_Time: 1.1
-  m_Position: {x: 2, y: 0, z: 3}
+  m_Position: {x: -6, y: 0, z: 3}
   m_Rotation: {x: 0, y: 67, z: 0}
 --- !u!114 &2827097576729438800
 MonoBehaviour:
@@ -611,9 +611,9 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 1.1
-      value: 2
-      inSlope: 1.690141
-      outSlope: 1.690141
+      value: -6
+      inSlope: 8.450705
+      outSlope: 8.450705
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
@@ -621,8 +621,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 2.2833333
       value: 4
-      inSlope: -0.79876506
-      outSlope: -0.79876506
+      inSlope: 2.5815167
+      outSlope: 2.5815167
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334

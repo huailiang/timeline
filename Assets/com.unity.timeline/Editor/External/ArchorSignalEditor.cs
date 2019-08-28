@@ -7,7 +7,7 @@ namespace UnityEngine.Timeline
 {
 
     [CustomTimelineEditor(typeof(AnchorAsset))]
-    class ArchorAssetEditor : ClipEditor
+    class ArchorSignalEditor : ClipEditor
     {
 
         Color32 backg = new Color32(1, 1, 1, 0);
@@ -20,10 +20,7 @@ namespace UnityEngine.Timeline
             AnchorAsset asset = clip.asset as AnchorAsset;
             Rect rect = region.position;
             TrackAsset track = clip.parentTrack;
-            if (target == null && track is AnchorTrack)
-            {
-                target = track as AnchorTrack;
-            }
+            target = track as AnchorTrack;
             if (target != null)
             {
                 target.RebuildClip();

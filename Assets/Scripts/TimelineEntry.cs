@@ -14,7 +14,6 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
     private void Start()
     {
         director = GetComponent<PlayableDirector>();
-        ParseTrack();
     }
 
     void Update()
@@ -58,6 +57,7 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
 
     public void OnNotify(Playable origin, INotification notification, object context)
     {
+        if (director == null) Start();
         if (notification is JumpSignalEmmiter)
         {
             JumpSignalEmmiter signal = notification as JumpSignalEmmiter;
@@ -67,35 +67,6 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
         {
             SlowSignalEmitter signal = notification as SlowSignalEmitter;
             director.playableGraph.GetRootPlayable(0).SetSpeed(signal.slowRate);
-        }
-    }
-
-    public void ParseTrack()
-    {
-        foreach (PlayableBinding pb in director.playableAsset.outputs)
-        {
-            if (pb.sourceObject is AnimationTrack)
-            {
-                AnimationTrack track = pb.sourceObject as AnimationTrack;
-                int cnt = track.GetMarkerCount();
-                var tfTracks = new List<AnchorSignalEmitter>();
-                var marks = track.GetMarkers().GetEnumerator();
-                while (marks.MoveNext())
-                {
-                    IMarker mark = marks.Current;
-                    if (mark is AnchorSignalEmitter)
-                    {
-                        tfTracks.Add(mark as AnchorSignalEmitter);
-                    }
-                }
-                marks.Dispose();
-
-                for (int i = 0; i < tfTracks.Count; i++)
-                {
-                    AnchorSignalEmitter sign = tfTracks[i];
-                    Debug.Log(sign.time + " " + sign.position);
-                }
-            }
         }
     }
 

@@ -28,6 +28,13 @@ public class AnchorAsset : PlayableAsset
         set { m_Track = value; }
     }
 
+    public bool IsValid()
+    {
+        return m_Track != null &&
+            m_Clip_Pos != null &&
+            m_Clip_Rot != null;
+    }
+
     public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
     {
         var director = owner.GetComponent<PlayableDirector>();
@@ -42,7 +49,7 @@ public class AnchorAsset : PlayableAsset
             go = (binding as Animation).gameObject;
         }
         AnchorBehaviour beha = new AnchorBehaviour();
-        beha.Set(clip_pos, clip_rot, go);
+        beha.Set(clip_pos, clip_rot, go, director);
         return ScriptPlayable<AnchorBehaviour>.Create(graph, beha);
     }
 
