@@ -32,19 +32,53 @@ SlowSignalEmitter:focus:checked
 	background-image: resource("Assets/Editor/StyleSheets/ico/slow_selected.png");
 }
 
-TransforSignalmEmitter
+ActiveSignalmEmitter
+{
+	width: 18px;
+    height: 18px;
+	background-image: resource("Assets/Editor/StyleSheets/ico/sty2_collapsed.png");
+}
+
+ActiveSignalmEmitter:checked
+{
+	background-image: resource("Assets/Editor/StyleSheets/ico/sty2_normal.png");
+}
+
+ActiveSignalmEmitter:focus:checked
+{
+	background-image: resource("Assets/Editor/StyleSheets/ico/sty2_selected.png");
+}
+
+AnchorSignalEmitter
 {
 	width: 18px;
     height: 18px;
 	background-image: resource("Assets/Editor/StyleSheets/ico/sty_collapsed.png");
 }
 
-TransforSignalmEmitter:checked
+AnchorSignalEmitter:checked
 {
 	background-image: resource("Assets/Editor/StyleSheets/ico/sty_normal.png");
 }
 
-TransforSignalmEmitter:focus:checked
+AnchorSignalEmitter:focus:checked
 {
 	background-image: resource("Assets/Editor/StyleSheets/ico/sty_selected.png");
+}
+
+QteEmitter
+{
+	width: 18px;
+    height: 18px;
+	background-image: resource("Assets/Editor/StyleSheets/ico/timg_collapsed.png");
+}
+
+QteEmitter:checked
+{
+	background-image: resource("Assets/Editor/StyleSheets/ico/timg_normal.png");
+}
+
+QteEmitter:focus:checked
+{
+	background-image: resource("Assets/Editor/StyleSheets/ico/timg_selected.png");
 }

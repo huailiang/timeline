@@ -5,7 +5,7 @@ namespace UnityEngine.Timeline
 {
 
     [Serializable]
-    [CustomStyle("TransforSignalmEmitter")]
+    [CustomStyle("AnchorSignalEmitter")]
     [Marker(TrackType.ANCHOR | TrackType.MARKER)]
     public class AnchorSignalEmitter : Marker
     {

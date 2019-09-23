@@ -3,24 +3,27 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 
-
-public class TimelineEntry : MonoBehaviour, INotificationReceiver
+public class TimelineEntry : MonoBehaviour
 {
 
     PlayableDirector director;
+    TimelineImp imp;
 
 
-    private void Start()
+    private void Awake()
     {
         director = GetComponent<PlayableDirector>();
+        imp = new TimelineImp();
+        TimelineUtil.Interface = imp;
+        imp.notify = OnNotify;
     }
+    
 
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.F1))
         {
             var output = ScriptPlayableOutput.Create(director.playableGraph, "");
-            output.AddNotificationReceiver(this);
             JumpSignalEmmiter sign = ScriptableObject.CreateInstance<JumpSignalEmmiter>();
             sign.jumpTime = 0;
             output.PushNotification(Playable.Null, sign);
@@ -30,17 +33,6 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
     public void OnRecSignal1()
     {
         Debug.Log("recv signal 1" + name);
-    }
-
-    public void OnRecSignal2()
-    {
-        Debug.Log("recv signal 2" + name);
-        director.time = 3.41d;
-    }
-
-    public void OnRecbSignal3()
-    {
-        Debug.Log("recv signal 3" + name);
     }
 
     public void JumpTo(float time)
@@ -54,9 +46,9 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
         Debug.Log("slow rate:" + slowRate);
     }
 
-    public void OnNotify(Playable origin, INotification notification, object context)
+    public void OnNotify(Playable origin, INotification notification)
     {
-        if (director == null) Start();
+        if (director == null) Awake();
         if (notification is JumpSignalEmmiter)
         {
             JumpSignalEmmiter signal = notification as JumpSignalEmmiter;
@@ -66,6 +58,13 @@ public class TimelineEntry : MonoBehaviour, INotificationReceiver
         {
             SlowSignalEmitter signal = notification as SlowSignalEmitter;
             director.playableGraph.GetRootPlayable(0).SetSpeed(signal.slowRate);
+        }
+        else if (notification is ActiveSignalEmmiter)
+        {
+            ActiveSignalEmmiter signal = notification as ActiveSignalEmmiter;
+            TrackAsset track = TimelineUtil.GetRootTrack(signal);
+            Transform tf = ExternalHelp.FetchAttachOfTrack(director, track);
+            if (tf) tf.gameObject.SetActive(signal.Active);
         }
     }
 

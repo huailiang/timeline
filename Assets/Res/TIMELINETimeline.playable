@@ -1,21 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8449621759852907163
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
-  m_Name: Signal Emitter
-  m_EditorClassIdentifier: 
-  m_Time: 0.9333333333333333
-  m_Retroactive: 0
-  m_EmitOnce: 0
-  m_Asset: {fileID: 0}
 --- !u!114 &-7505263418478655391
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -211,7 +195,7 @@ MonoBehaviour:
   m_Version: 3
   m_AnimClip: {fileID: 0}
   m_Locked: 0
-  m_Muted: 0
+  m_Muted: 1
   m_CustomPlayableFullTypename: 
   m_Curves: {fileID: 0}
   m_Parent: {fileID: -1189759525703026184}
@@ -402,7 +386,7 @@ MonoBehaviour:
   m_Version: 3
   m_AnimClip: {fileID: 0}
   m_Locked: 0
-  m_Muted: 0
+  m_Muted: 1
   m_CustomPlayableFullTypename: 
   m_Curves: {fileID: 0}
   m_Parent: {fileID: 11400000}
@@ -687,8 +671,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c321a6350f7321743b26624159d62d2e, type: 3}
   m_Name: BoneFxAsset
   m_EditorClassIdentifier: 
-  prefab: 
-  fxPath: 
+  prefab: FX
+  fxPath: root/Cube/fx
   pos: {x: 0, y: 0, z: 0}
   rot: {x: 0, y: 0, z: 0}
   scale: {x: 0, y: 0, z: 0}
@@ -1002,9 +986,7 @@ MonoBehaviour:
   - {fileID: -6216908205366586188}
   m_Clips: []
   m_Markers:
-    m_Objects:
-    - {fileID: -8449621759852907163}
-    - {fileID: -364672045684843909}
+    m_Objects: []
   m_InfiniteClipPreExtrapolation: 0
   m_InfiniteClipPostExtrapolation: 0
   m_InfiniteClipOffsetPosition: {x: 0, y: 0, z: 0}
@@ -1038,22 +1020,6 @@ MonoBehaviour:
   m_Time: 4.616666666666666
   m_EmitOnce: 0
   m_JumpTime: 1.3
---- !u!114 &-364672045684843909
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
-  m_Name: Signal Emitter
-  m_EditorClassIdentifier: 
-  m_Time: 1.0666666666666667
-  m_Retroactive: 0
-  m_EmitOnce: 0
-  m_Asset: {fileID: 0}
 --- !u!114 &-213412294637387634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1094,6 +1060,22 @@ MonoBehaviour:
     m_Framerate: 60
   m_DurationMode: 0
   m_MarkerTrack: {fileID: -4464897745421129631}
+--- !u!114 &219172872540336860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3401375a808de944480c4704a1115683, type: 3}
+  m_Name: Active Signal Emmiter
+  m_EditorClassIdentifier: 
+  m_Time: 3.316666666666667
+  m_Retroactive: 0
+  m_EmitOnce: 0
+  m_active: 0
 --- !u!114 &621386014624990912
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1465,7 +1447,8 @@ MonoBehaviour:
     m_PreExtrapolationTime: 3.216666666666667
     m_DisplayName: rot
   m_Markers:
-    m_Objects: []
+    m_Objects:
+    - {fileID: 219172872540336860}
   m_InfiniteClipPreExtrapolation: 0
   m_InfiniteClipPostExtrapolation: 0
   m_InfiniteClipOffsetPosition: {x: 0, y: 0, z: 0}

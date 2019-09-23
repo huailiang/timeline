@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 public class BoneFxBehaviour : PlayableBehaviour
 {
@@ -13,7 +14,12 @@ public class BoneFxBehaviour : PlayableBehaviour
     GameObject _fx_obj;
     Vector3 _pos, _rot,_scale;
 
-    public void Set(PlayableDirector dir, string prefab, string fxpath, Vector3 pos, Vector3 rot, Vector3 scale)
+    public void Set(PlayableDirector dir, 
+        string prefab, 
+        string fxpath, 
+        Vector3 pos, 
+        Vector3 rot, 
+        Vector3 scale)
     {
         _director = dir;
         _prefab = prefab;
@@ -21,7 +27,6 @@ public class BoneFxBehaviour : PlayableBehaviour
         _rot = rot;
         _scale = scale;
         _fx_path = fxpath;
-
     }
 
     public override void OnGraphStart(Playable playable) { }
@@ -57,6 +62,7 @@ public class BoneFxBehaviour : PlayableBehaviour
                         GameObject.DestroyImmediate(tf.gameObject);
                 }
 #endif
+                _fx_obj = TimelineUtil.Load<GameObject>(_prefab, _fx_root, Vector3.zero, Quaternion.identity);
                  //_fx_obj;
                 _particles = _fx_obj.GetComponentsInChildren<ParticleSystem>();
                 _fx_obj.transform.parent = _fx_root;

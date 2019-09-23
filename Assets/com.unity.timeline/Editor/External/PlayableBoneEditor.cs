@@ -38,15 +38,15 @@ namespace UnityEngine.Timeline
             if (prefabGo != null)
             {
                 string path = AssetDatabase.GetAssetPath(prefabGo);
-                asset.prefab = path.Replace("Assets/BundleRes/", string.Empty).Replace(".prefab", string.Empty);
-                if (!path.Contains("BundleRes") || !path.EndsWith(".prefab"))
+                asset.prefab = path.Replace("Assets/Res/", string.Empty).Replace(".prefab", string.Empty);
+                if (!path.Contains("Res") || !path.EndsWith(".prefab"))
                 {
                     EditorGUILayout.HelpBox("The fx that you selected is invalid", MessageType.Error);
                 }
             }
             if (boneGo == null && !string.IsNullOrEmpty(asset.prefab))
             {
-                string path = "Assets/BundleRes/" + asset.prefab + ".prefab";
+                string path = "Assets/Res/" + asset.prefab + ".prefab";
                 prefabGo = AssetDatabase.LoadAssetAtPath<GameObject>(path);
                 if (prefabGo == null)
                 {

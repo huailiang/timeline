@@ -240,10 +240,16 @@ namespace UnityEngine.Timeline
             }
         }
 
-        static void Trigger_internal(Playable playable, PlayableOutput output,  ref NotificationEntry e)
+        static void Trigger_internal(Playable playable, PlayableOutput output, ref NotificationEntry e)
         {
-            output.PushNotification(playable, e.payload);
-            e.notificationFired = true;
+            var notify = TimelineUtil.Interface?.notify;
+            if (notify != null)
+            {
+                notify(playable, e.payload);
+                e.notificationFired = true;
+            }
+            //output.PushNotification(playable, e.payload);
+            //e.notificationFired = true;
         }
 
         static void Restore_internal(ref NotificationEntry e)
@@ -251,4 +257,5 @@ namespace UnityEngine.Timeline
             e.notificationFired = false;
         }
     }
+
 }
