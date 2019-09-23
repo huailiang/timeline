@@ -86,15 +86,20 @@ namespace UnityEngine.Timeline
         {
             if (prefabGo != null)
             {
+                GUILayout.Space(8);
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
                 Texture2D icon128 = AssetPreview.GetAssetPreview(prefabGo);
-                EditorGUILayout.ObjectField(icon128, typeof(Texture2D), true);
+                EditorGUILayout.ObjectField(icon128, typeof(Texture2D), false, GUILayout.Width(128 + 8), GUILayout.Height(128));
+                GUILayout.Space(4);
+                GUILayout.EndHorizontal();
             }
         }
 
         void DrawTransform()
         {
             BoneFxAsset asset = target as BoneFxAsset;
-            EditorGUILayout.LabelField("Fx transform:");
+            EditorGUILayout.LabelField("Fx Transform:");
             asset.pos = EditorGUILayout.Vector3Field(" Position", asset.pos);
             asset.rot = EditorGUILayout.Vector3Field(" Rotation", asset.rot);
             asset.scale = EditorGUILayout.Vector3Field(" Scale", asset.scale);

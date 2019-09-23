@@ -35,12 +35,6 @@ namespace UnityEngine.Timeline
     {
         public TrackType supportType = default(TrackType);
 
-        public MarkerAttribute(bool onlyMarker)
-        {
-            if (onlyMarker)
-                supportType |= TrackType.MARKER;
-        }
-
 
         public MarkerAttribute(TrackType type)
         {

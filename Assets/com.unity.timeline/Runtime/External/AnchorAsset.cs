@@ -38,18 +38,9 @@ public class AnchorAsset : PlayableAsset
     public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
     {
         var director = owner.GetComponent<PlayableDirector>();
-        var binding = director.GetGenericBinding(track);
-        GameObject go = null;
-        if (binding is Animator)
-        {
-            go = (binding as Animator).gameObject;
-        }
-        else if (binding is Animation)
-        {
-            go = (binding as Animation).gameObject;
-        }
+        Transform tf = ExternalHelp.FetchAttachOfTrack(director, track);
         AnchorBehaviour beha = new AnchorBehaviour();
-        beha.Set(clip_pos, clip_rot, go, director);
+        beha.Set(clip_pos, clip_rot, tf, director);
         return ScriptPlayable<AnchorBehaviour>.Create(graph, beha);
     }
 
