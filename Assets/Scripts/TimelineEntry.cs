@@ -8,7 +8,9 @@ public class TimelineEntry : MonoBehaviour
 
     PlayableDirector director;
     TimelineImp imp;
-
+    private bool backward;
+    private GUIStyle style = new GUIStyle();
+    private Rect rect = new Rect(20, 20, 150, 40);
 
     private void Awake()
     {
@@ -16,17 +18,52 @@ public class TimelineEntry : MonoBehaviour
         imp = new TimelineImp();
         TimelineUtil.Interface = imp;
         imp.notify = OnNotify;
+        backward = false;
     }
-    
+
+    void Start()
+    {
+        style.normal.textColor = Color.red;
+        style.fontSize = 18;
+    }
 
     void Update()
     {
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            director.Stop();
+            director.time = 0d;
+            director.Play();
+        }
         if (Input.GetKeyUp(KeyCode.F1))
         {
             var output = ScriptPlayableOutput.Create(director.playableGraph, "");
             JumpSignalEmmiter sign = ScriptableObject.CreateInstance<JumpSignalEmmiter>();
             sign.jumpTime = 0;
             output.PushNotification(Playable.Null, sign);
+        }
+        if (Input.GetKeyUp(KeyCode.F3))
+        {
+            director.Pause();
+            backward = true;
+        }
+        if (Input.GetKeyUp(KeyCode.F4))
+        {
+            backward = false;
+            director.Play();
+        }
+        if (backward)
+        {
+            director.time = director.time - Time.deltaTime;
+            director.Evaluate();
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (director)
+        {
+            GUI.Label(rect, "frame: " + (director.time * 30).ToString("f0"), style);
         }
     }
 
@@ -68,4 +105,5 @@ public class TimelineEntry : MonoBehaviour
         }
     }
 
+    
 }

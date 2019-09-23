@@ -156,15 +156,15 @@ namespace UnityEngine.Timeline
                     ((AudioPlayableOutput)playableOutput).SetEvaluateOnSeek(!muteAudioScrubbing);
 
                 // If the track is the timeline marker track, assume binding is the PlayableDirector
-                if (track.timelineAsset.markerTrack == track)
-                {
-                    var director = go.GetComponent<PlayableDirector>();
-                    playableOutput.SetUserData(director);
-                    foreach (var c in go.GetComponents<INotificationReceiver>())
-                    {
-                        playableOutput.AddNotificationReceiver(c);
-                    }
-                }
+                //if (track.timelineAsset.markerTrack == track)
+                //{
+                //    var director = go.GetComponent<PlayableDirector>();
+                //    playableOutput.SetUserData(director);
+                //    foreach (var c in go.GetComponents<INotificationReceiver>())
+                //    {
+                //        playableOutput.AddNotificationReceiver(c);
+                //    }
+                //}
             }
         }
 
