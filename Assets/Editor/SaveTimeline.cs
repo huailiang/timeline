@@ -4,9 +4,12 @@ using UnityEngine.Timeline;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using System.Collections.Generic;
 
 public class SaveTimeline
 {
+
+    private static List<TrackAsset> m_tracks = new List<TrackAsset>();
 
     [MenuItem("XEditor/Save _F2", priority = 2)]
     public static void Save()
@@ -19,8 +22,7 @@ public class SaveTimeline
         else
         {
             EditorUtility.DisplayDialog("tip",
-                "There is not direcot in the scene",
-                "ok");
+                "There is not direcot in the scene", "ok");
         }
     }
 
@@ -28,37 +30,68 @@ public class SaveTimeline
     {
         string path = Application.dataPath + "/Res/" + asset.name + ".byte";
         Debug.Log(path);
-        FileStream fs = new FileStream("", FileMode.CreateNew, FileAccess.ReadWrite);
+        FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
         BinaryWriter bw = new BinaryWriter(fs);
         SaveAsset(asset, bw);
         bw.Close();
         fs.Close();
+        m_tracks.Clear();
+        AssetDatabase.Refresh();
+        Debug.Log("export timeline success");
     }
 
 
     private static void SaveAsset(TimelineAsset asset, BinaryWriter bw)
     {
+        AnalyTrack(asset);
+
         bw.Write(asset.duration);
-        var tracks = asset.GetOutputTracks();
-        bw.Write(tracks.Count());
-        foreach (var it in tracks)
+        bw.Write(m_tracks.Count());
+        foreach (var it in m_tracks)
         {
             SaveTrack(it, bw);
         }
     }
 
+    private static void AnalyTrack(TimelineAsset asset)
+    {
+        m_tracks.Clear();
+        var tracks = asset.GetRootTracks();
+        foreach (var track in tracks)
+        {
+            m_tracks.Add(track);
+            AnalyTrack(track);
+        }
+    }
+
+    private static void AnalyTrack(TrackAsset track)
+    {
+        var childs = track.GetChildTracks();
+        foreach (var it in childs)
+        {
+            m_tracks.Add(it);
+            AnalyTrack(it);
+        }
+    }
 
     private static void SaveTrack(TrackAsset track, BinaryWriter bw)
     {
         bw.Write(track.start);
         bw.Write(track.end);
+        int parent = m_tracks.IndexOf(track.parent as TrackAsset);
+        bw.Write(parent);
+        Debug.Log("track: " + track.name + " " + track.GetType() + " " + parent);
 
+        //track clips
+        track.SortClips();
         var clips = track.GetClips();
         bw.Write(clips.Count());
         foreach (var it in clips)
         {
             SaveClip(it, bw);
         }
+
+        //track markers
         var markers = track.GetMarkers();
         foreach (var it in markers)
         {
@@ -85,7 +118,16 @@ public class SaveTimeline
 
     private static void SaveMarker(IMarker marker, BinaryWriter bw)
     {
+        MarkType type = MarkType.NONE;
+        if (marker is IXMarker)
+        {
+            type = (marker as IXMarker).markType;
+        }
+        int parent = m_tracks.IndexOf(marker.parent);
+        Debug.Log("marker: " + type + " " + parent);
         bw.Write(marker.time);
+        bw.Write((int)type);
+        bw.Write(parent);
     }
 
 }

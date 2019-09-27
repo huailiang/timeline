@@ -13,6 +13,7 @@ public class XTrackAsset : PlayableAsset
     private DiscreteTime m_Start;
     private DiscreteTime m_End;
     private PlayableAsset m_Parent;
+    private int m_trackIndex;
 
     public Playable playable;
     public PlayableOutput playableOutput;

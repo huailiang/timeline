@@ -8,7 +8,7 @@ namespace UnityEngine.Timeline
     [Serializable]
     [CustomStyle("JumpSignalEmmiter")]
     [MarkerAttribute(TrackType.MARKER)]
-    public class JumpSignalEmmiter : Marker, INotification, INotificationOptionProvider
+    public class JumpSignalEmmiter : Marker, IXMarker, INotification, INotificationOptionProvider
     {
         [SerializeField] bool m_EmitOnce;
         [SerializeField] float m_JumpTime;
@@ -33,6 +33,8 @@ namespace UnityEngine.Timeline
                 return new PropertyName("JumpSignalEmmiter");
             }
         }
+
+        public MarkType markType => MarkType.JUMP;
 
         NotificationFlags INotificationOptionProvider.flags
         {

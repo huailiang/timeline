@@ -756,7 +756,7 @@ namespace UnityEngine.Timeline
         }
 
         // sorts clips by start time
-        internal void SortClips()
+        public void SortClips()
         {
             var clipsAsArray = clips; // will alloc
             if (!m_CacheSorted)

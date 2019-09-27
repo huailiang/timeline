@@ -7,7 +7,7 @@ namespace UnityEngine.Timeline
     [Serializable]
     [CustomStyle("ActiveSignalmEmitter")]
     [Marker(TrackType.ANIMTION | TrackType.CONTROL)]
-    public partial class ActiveSignalEmmiter : Marker, INotification, INotificationOptionProvider
+    public partial class ActiveSignalEmmiter : Marker,IXMarker, INotification, INotificationOptionProvider
     {
         [SerializeField] protected bool m_Retroactive;
         [SerializeField] protected bool m_EmitOnce;
@@ -19,6 +19,7 @@ namespace UnityEngine.Timeline
             get { return m_active; }
             set { m_active = value; }
         }
+
         public bool retroactive
         {
             get { return m_Retroactive; }
@@ -36,6 +37,8 @@ namespace UnityEngine.Timeline
         {
             get { return new PropertyName("QteLongPressSignal"); }
         }
+
+        public MarkType markType => MarkType.ACTIVE;
 
         NotificationFlags INotificationOptionProvider.flags
         {

@@ -7,7 +7,7 @@ namespace UnityEngine.Timeline
     [Serializable]
     [CustomStyle("SlowSignalEmitter")]
     [MarkerAttribute(TrackType.MARKER)]
-    public class SlowSignalEmitter : Marker, INotification, INotificationOptionProvider
+    public class SlowSignalEmitter : Marker, IXMarker, INotification, INotificationOptionProvider
     {
         [SerializeField] bool m_Retroactive;
         [SerializeField] bool m_EmitOnce;
@@ -35,6 +35,8 @@ namespace UnityEngine.Timeline
         {
             get { return new PropertyName("SlowSignalEmitter"); }
         }
+
+        public MarkType markType => MarkType.SLOW;
 
         NotificationFlags INotificationOptionProvider.flags
         {
