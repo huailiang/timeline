@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace UnityEngine.Timeline
 {
-    static class TimelineCreateUtilities
+    public static class TimelineCreateUtilities
     {
         // based off of ObjectNames.GetUniqueName, but can exist in runtime
         public static string GenerateUniqueActorName(List<ScriptableObject> tracks, string name)

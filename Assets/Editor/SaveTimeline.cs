@@ -103,16 +103,13 @@ public class SaveTimeline
     private static void SaveClip(TimelineClip clip, BinaryWriter bw)
     {
         bw.Write(clip.start);
-        bw.Write(clip.end);
         bw.Write(clip.clipIn);
         bw.Write(clip.duration);
-        bw.Write(clip.timeScale);
         bw.Write(clip.timeScale);
         bw.Write(clip.blendInDuration);
         bw.Write(clip.blendOutDuration);
         bw.Write(clip.easeInDuration);
         bw.Write(clip.easeOutDuration);
-        bw.Write(clip.easeOutTime);
     }
 
 

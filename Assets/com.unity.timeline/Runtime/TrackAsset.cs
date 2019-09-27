@@ -972,7 +972,7 @@ namespace UnityEngine.Timeline
         /// </summary>
         /// <param name="clip">The timeline clip added to this track</param>
         /// <remarks>Use this method to set default values on a timeline clip, or it's PlayableAsset.</remarks>
-        protected virtual void OnCreateClip(TimelineClip clip) {}
+        protected virtual void OnCreateClip(TimelineClip clip) { }
 
         void UpdateDuration()
         {

@@ -33,6 +33,7 @@ public class XTrackAsset : PlayableAsset
         internal set { m_Parent = value; }
     }
 
+    protected virtual void OnCreateClip(TimelineClip clip) { }
     public virtual Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
     {
         return Playable.Create(graph, inputCount);
@@ -98,6 +99,74 @@ public class XTrackAsset : PlayableAsset
     {
         m_Markers.Add(e);
     }
-    
+
+
+    internal TimelineClip CreateAndAddNewClipOfType(Type requestedType)
+    {
+        var newClip = CreateClipOfType(requestedType);
+        AddClip(newClip);
+        return newClip;
+    }
+
+    internal TimelineClip CreateClipOfType(Type requestedType)
+    {
+        var playableAsset = CreateInstance(requestedType);
+        if (playableAsset == null)
+        {
+            throw new System.InvalidOperationException("Could not create an instance of the ScriptableObject type " + requestedType.Name);
+        }
+        playableAsset.name = requestedType.Name;
+        TimelineCreateUtilities.SaveAssetIntoObject(playableAsset, this);
+
+        return CreateClipFromAsset(playableAsset);
+    }
+
+    private TimelineClip CreateClipFromAsset(ScriptableObject playableAsset)
+    {
+        var newClip = CreateNewClipContainerInternal();
+        newClip.displayName = playableAsset.name;
+        newClip.asset = playableAsset;
+
+        IPlayableAsset iPlayableAsset = playableAsset as IPlayableAsset;
+        if (iPlayableAsset != null)
+        {
+            var candidateDuration = iPlayableAsset.duration;
+
+            if (!double.IsInfinity(candidateDuration) && candidateDuration > 0)
+                newClip.duration = Math.Min(Math.Max(candidateDuration, TimelineClip.kMinDuration), TimelineClip.kMaxTimeValue);
+        }
+
+        try
+        {
+            OnCreateClip(newClip);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message, playableAsset);
+            return null;
+        }
+
+        return newClip;
+    }
+
+    internal TimelineClip CreateNewClipContainerInternal()
+    {
+        var clipContainer = new TimelineClip(/*this*/null);
+        clipContainer.asset = null;
+
+        // position clip at end of sequence
+        var newClipStart = 0.0;
+        for (var a = 0; a < m_Clips.Count - 1; a++)
+        {
+            var clipDuration = m_Clips[a].duration;
+            if (double.IsInfinity(clipDuration))
+                clipDuration = TimelineClip.kDefaultClipDurationInSeconds;
+            newClipStart = Math.Max(newClipStart, m_Clips[a].start + clipDuration);
+        }
+
+        clipContainer.mixInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        clipContainer.mixOutCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
+        return clipContainer;
+    }
 
 }

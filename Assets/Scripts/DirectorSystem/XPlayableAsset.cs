@@ -7,6 +7,15 @@ public class XPlayableAsset : PlayableAsset
 
     private double _duration;
 
+    private XTrackAsset[] _trackAssets;
+
+
+    public XTrackAsset[] TrackAssets
+    {
+        get { return _trackAssets; }
+        set { _trackAssets = value; }
+    }
+
     public override double duration
     {
         get { return _duration; }
@@ -26,5 +35,7 @@ public class XPlayableAsset : PlayableAsset
     {
         _duration = duration;
     }
+
+
 
 }

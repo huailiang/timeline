@@ -42,12 +42,12 @@ namespace UnityEngine.Timeline
         /// </summary>
         public static readonly double kTimeScaleMax = 1000;
 
-        internal static readonly string kDefaultCurvesName = "Clip Parameters";
+        public static readonly string kDefaultCurvesName = "Clip Parameters";
 
-        internal static readonly double kMinDuration = 1f / 60f;
+        public static readonly double kMinDuration = 1f / 60f;
 
         // constant representing the longest possible sequence duration
-        internal static readonly double kMaxTimeValue = 1000000; // more than a week's time, and within numerical precision boundaries
+        public static readonly double kMaxTimeValue = 1000000; // more than a week's time, and within numerical precision boundaries
 
         /// <summary>
         /// How the clip handles time outside its start and end range.
@@ -96,7 +96,7 @@ namespace UnityEngine.Timeline
             Manual
         };
 
-        internal TimelineClip(TrackAsset parent)
+        public TimelineClip(TrackAsset parent)
         {
             // parent clip into track
             parentTrack = parent;
@@ -105,7 +105,7 @@ namespace UnityEngine.Timeline
         [SerializeField] double m_Start;
         [SerializeField] double m_ClipIn;
         [SerializeField] Object m_Asset;
-        [SerializeField][FormerlySerializedAs("m_HackDuration")] double m_Duration;
+        [SerializeField] [FormerlySerializedAs("m_HackDuration")] double m_Duration;
         [SerializeField] double m_TimeScale = 1.0;
         [SerializeField] TrackAsset m_ParentTrack;
 
@@ -291,7 +291,7 @@ namespace UnityEngine.Timeline
         public Object underlyingAsset
         {
             get { return null; }
-            set {}
+            set { }
         }
 
         /// <summary>
