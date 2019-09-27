@@ -10,7 +10,7 @@ public class TimelineEditor : Editor
     private PlayableDirector director;
     private Color[] gizColors = { Color.red, Color.green, Color.white };
 
-    [MenuItem("XEditor/Timeline/SelectDirector _F1", priority = 3)]
+    [MenuItem("XEditor/SelectDirector _F1", priority = 3)]
     public static void FocusDirector()
     {
         GameObject go = GameObject.Find("TIMELINE");

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace UnityEngine.Timeline
 {
-    interface IInterval
+    public interface IInterval
     {
         Int64 intervalStart { get; }
         Int64 intervalEnd { get; }
     }
 
-    struct IntervalTreeNode         // interval node,
+    public struct IntervalTreeNode         // interval node,
     {
         public Int64 center;        // midpoint for this node
         public int first;           // index of first element of this node in m_Entries
@@ -18,7 +18,7 @@ namespace UnityEngine.Timeline
         public int right;           // index in m_Nodes of the right subnode
     }
 
-    class IntervalTree<T> where T : IInterval
+    public class IntervalTree<T> where T : IInterval
     {
         internal struct Entry
         {

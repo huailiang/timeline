@@ -640,7 +640,8 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    7: CINEMACHINE_TIMELINE
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}

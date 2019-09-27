@@ -2,7 +2,7 @@ using System;
 
 namespace UnityEngine.Timeline
 {
-    struct DiscreteTime : IComparable
+    public struct DiscreteTime : IComparable
     {
         const double k_Tick = 1e-12;
         public static readonly DiscreteTime kMaxTime = new DiscreteTime(Int64.MaxValue);

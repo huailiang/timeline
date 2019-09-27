@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 namespace UnityEngine.Timeline
 {
     [Serializable]
-    struct MarkerList : ISerializationCallbackReceiver
+    public struct MarkerList : ISerializationCallbackReceiver
     {
         [SerializeField, HideInInspector] List<ScriptableObject> m_Objects;
 

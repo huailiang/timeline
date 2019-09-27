@@ -6,7 +6,7 @@ namespace UnityEngine.Timeline
     // The RuntimeClip wraps a single clip in an instanciated sequence.
     // It supports the IInterval interface so that it can be stored in the interval tree
     // It is this class that is returned by an interval tree query.
-    class RuntimeClip : RuntimeClipBase
+    public class RuntimeClip : RuntimeClipBase
     {
         TimelineClip m_Clip;
         Playable m_Playable;

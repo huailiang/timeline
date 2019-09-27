@@ -3,7 +3,7 @@ using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
 {
-    abstract class RuntimeElement : IInterval
+    public abstract class RuntimeElement : IInterval
     {
         public abstract Int64 intervalStart { get; }
         public abstract Int64 intervalEnd { get; }
