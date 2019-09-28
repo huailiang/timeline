@@ -12,14 +12,14 @@ public class LoadTimeline
     {
         FileStream stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
         BinaryReader br = new BinaryReader(stream);
-        asset = Load(br);
+        asset = Load(br, director);
         director.playableAsset = asset;
         br.Close();
         stream.Close();
     }
 
 
-    private XPlayableAsset Load(BinaryReader reader)
+    private XPlayableAsset Load(BinaryReader reader, PlayableDirector director)
     {
         var asset = ScriptableObject.CreateInstance<XPlayableAsset>();
         var dur = reader.ReadDouble();
@@ -28,14 +28,14 @@ public class LoadTimeline
         asset.TrackAssets = new XTrackAsset[cnt];
         for (int i = 0; i < cnt; i++)
         {
-            LoadTrack(reader, asset.TrackAssets[i]);
+            LoadTrack(reader, asset.TrackAssets[i], director);
         }
         return asset;
     }
 
 
 
-    private void LoadTrack(BinaryReader reader, XTrackAsset track)
+    private void LoadTrack(BinaryReader reader, XTrackAsset track, PlayableDirector director)
     {
         track = ScriptableObject.CreateInstance<XTrackAsset>();
         track.Load(reader);
@@ -44,6 +44,12 @@ public class LoadTimeline
         {
             XTrackAsset parentTrack = asset.TrackAssets[parent];
             track.parent = parentTrack;
+        }
+        string bind = reader.ReadString();
+        if (!string.IsNullOrEmpty(bind))
+        {
+            GameObject bindGo = GameObject.Find(bind);
+            // director.SetGenericBinding(track, bindGo);
         }
 
         //clips

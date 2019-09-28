@@ -9,15 +9,18 @@ using System.Collections.Generic;
 public class SaveTimeline
 {
 
+    private static PlayableDirector director;
     private static List<TrackAsset> m_tracks = new List<TrackAsset>();
+    private static Dictionary<string, Object> bindingDict = new Dictionary<string, Object>();
 
     [MenuItem("XEditor/Save _F2", priority = 2)]
     public static void Save()
     {
-        var dir = GameObject.FindObjectOfType<PlayableDirector>();
-        if (dir != null)
+        director = GameObject.FindObjectOfType<PlayableDirector>();
+        if (director != null)
         {
-            SaveAsset(dir.playableAsset as TimelineAsset);
+            AnalyBinding(director.playableAsset);
+            SaveAsset(director.playableAsset as TimelineAsset);
         }
         else
         {
@@ -74,13 +77,23 @@ public class SaveTimeline
         }
     }
 
+
+    private static void AnalyBinding(PlayableAsset asset)
+    {
+        bindingDict = asset.outputs.
+        ToDictionary(k => k.streamName, v => v.sourceObject);
+    }
+
     private static void SaveTrack(TrackAsset track, BinaryWriter bw)
     {
         bw.Write(track.start);
         bw.Write(track.end);
         int parent = m_tracks.IndexOf(track.parent as TrackAsset);
         bw.Write(parent);
-        Debug.Log("track: " + track.name + " " + track.GetType() + " " + parent);
+        Object bindObj = director.GetGenericBinding(bindingDict[track.name]);
+        string name = bindObj ? bindObj.name : "";
+        bw.Write(name);
+        Debug.Log("track: " + track.name + " " + track.GetType() + " " + parent + " " + name);
 
         //track clips
         track.SortClips();
@@ -121,7 +134,7 @@ public class SaveTimeline
             type = (marker as IXMarker).markType;
         }
         int parent = m_tracks.IndexOf(marker.parent);
-        Debug.Log("marker: " + type + " " + parent);
+        // Debug.Log("marker: " + type + " " + parent);
         bw.Write(marker.time);
         bw.Write((int)type);
         bw.Write(parent);
