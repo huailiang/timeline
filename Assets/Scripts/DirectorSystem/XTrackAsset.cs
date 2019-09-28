@@ -13,6 +13,8 @@ public class XTrackAsset : PlayableAsset
     private DiscreteTime m_Start;
     private DiscreteTime m_End;
     private PlayableAsset m_Parent;
+
+    public XTrackType trackType;
     public Playable playable;
     public PlayableOutput playableOutput;
 
@@ -85,6 +87,7 @@ public class XTrackAsset : PlayableAsset
     {
         m_Start = (DiscreteTime)reader.ReadDouble();
         m_End = (DiscreteTime)reader.ReadDouble();
+        trackType = (XTrackType)reader.ReadInt32();
     }
 
 

@@ -88,12 +88,15 @@ public class SaveTimeline
     {
         bw.Write(track.start);
         bw.Write(track.end);
+        var type = DirectorType.UtilTrackType(track);
+        bw.Write((int)type);
         int parent = m_tracks.IndexOf(track.parent as TrackAsset);
         bw.Write(parent);
         Object bindObj = director.GetGenericBinding(bindingDict[track.name]);
-        string name = bindObj ? bindObj.name : "";
-        bw.Write(name);
-        Debug.Log("track: " + track.name + " " + track.GetType() + " " + parent + " " + name);
+        string bind = bindObj ? bindObj.name : "";
+        bw.Write(bind);
+
+        Debug.Log("track: " + track.name + " " + type + " " + parent + " " + bind);
 
         //track clips
         track.SortClips();

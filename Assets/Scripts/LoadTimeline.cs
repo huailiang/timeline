@@ -46,6 +46,7 @@ public class LoadTimeline
             track.parent = parentTrack;
         }
         string bind = reader.ReadString();
+
         if (!string.IsNullOrEmpty(bind))
         {
             GameObject bindGo = GameObject.Find(bind);
