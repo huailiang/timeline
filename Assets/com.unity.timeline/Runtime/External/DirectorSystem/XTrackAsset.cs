@@ -9,30 +9,25 @@ namespace UnityEngine.Timeline
     public class XTrackAsset : PlayableAsset
     {
         static event Action<TimelineClip, GameObject, Playable> OnClipPlayableCreate;
-
-        private DiscreteTime m_Start;
-        private DiscreteTime m_End;
-        private PlayableAsset m_Parent;
+        private double m_Start;
+        private double m_End;
         private TrackType m_TrackType;
         private string m_Name;
+        private bool m_Mute;
 
         public Playable playable;
         public PlayableOutput playableOutput;
-
+        private int m_ParentIndex;
         protected internal List<TimelineClip> m_Clips = new List<TimelineClip>();
 
         MarkerList m_Markers = new MarkerList(0);
 
         public sealed override double duration
         {
-            get { return (double)(m_End - m_Start); }
+            get { return m_End - m_Start; }
         }
 
-        public PlayableAsset parent
-        {
-            get { return m_Parent; }
-            set { m_Parent = value; }
-        }
+        public PlayableAsset parent;
 
         public TrackType trackType
         {
@@ -41,7 +36,12 @@ namespace UnityEngine.Timeline
 
         public bool isSubTrack
         {
-            get { return m_Parent == null; }
+            get { return m_ParentIndex >= 0; }
+        }
+
+        public bool mute
+        {
+            get { return m_Mute; }
         }
 
         public override IEnumerable<PlayableBinding> outputs
@@ -83,6 +83,55 @@ namespace UnityEngine.Timeline
             return Playable.Null;
         }
 
+        internal Playable CreatePlayableGraph(PlayableGraph graph, GameObject go, IntervalTree<RuntimeElement> tree, Playable timelinePlayable)
+        {
+            var mixerPlayable = Playable.Null;
+            if (m_Clips.Count > 0)
+            {
+                mixerPlayable = OnCreateClipPlayableGraph(graph, go, tree);
+            }
+
+            var notificationsPlayable = CreateNotificationsPlayable(graph, mixerPlayable, go, timelinePlayable);
+            if (!notificationsPlayable.IsValid() && !mixerPlayable.IsValid())
+            {
+                Debug.LogErrorFormat("Track {0} of type {1} has no notifications and returns an invalid mixer Playable", name,
+                    GetType().FullName);
+
+                return Playable.Create(graph);
+            }
+
+            var playableGraph = m_Markers.Count > 0 ? notificationsPlayable : mixerPlayable;
+            ConfigureTrackAnimation(tree, go, playableGraph);
+
+            return playableGraph;
+        }
+
+        void ConfigureTrackAnimation(IntervalTree<RuntimeElement> tree, GameObject go, Playable blend)
+        {
+            if (trackType == TrackType.ANIMTION)
+            {
+                //blend.SetAnimatedProperties(m_Curves);
+                tree.Add(new InfiniteRuntimeClip(blend));
+            }
+        }
+
+        Playable CreateNotificationsPlayable(PlayableGraph graph, Playable mixerPlayable, GameObject go, Playable timelinePlayable)
+        {
+            var notificationPlayable = NotificationUtilities.CreateNotificationsPlayable(graph, m_Markers.GetMarkers(), go);
+            if (notificationPlayable.IsValid())
+            {
+                notificationPlayable.GetBehaviour().timeSource = timelinePlayable;
+                if (mixerPlayable.IsValid())
+                {
+                    notificationPlayable.SetInputCount(1);
+                    graph.Connect(mixerPlayable, 0, notificationPlayable, 0);
+                    notificationPlayable.SetInputWeight(mixerPlayable, 1);
+                }
+            }
+
+            return notificationPlayable;
+        }
+
         internal virtual Playable OnCreateClipPlayableGraph(PlayableGraph graph, GameObject go,
                 IntervalTree<RuntimeElement> tree)
         {
@@ -106,10 +155,20 @@ namespace UnityEngine.Timeline
 
         public void Load(BinaryReader reader)
         {
-            m_Start = (DiscreteTime)reader.ReadDouble();
-            m_End = (DiscreteTime)reader.ReadDouble();
+            m_Start = reader.ReadDouble();
+            m_End = reader.ReadDouble();
             m_Name = reader.ReadString();
             m_TrackType = (TrackType)reader.ReadInt32();
+            m_ParentIndex = reader.ReadInt32();
+            m_Mute = reader.ReadBoolean();
+        }
+
+        public void OnPostLoad(XPlayableAsset playable)
+        {
+            if (playable && m_ParentIndex >= 0)
+            {
+                parent = playable.TrackAssets[m_ParentIndex];
+            }
         }
 
 
@@ -124,24 +183,17 @@ namespace UnityEngine.Timeline
         }
 
 
-        public TimelineClip CreateAndAddNewClipOfType(Type requestedType)
-        {
-            var newClip = CreateClipOfType(requestedType);
-            AddClip(newClip);
-            return newClip;
-        }
 
-        internal TimelineClip CreateClipOfType(Type requestedType)
+        internal TimelineClip CreateClip(PlayableAsset playableAsset)
         {
-            var playableAsset = CreateInstance(requestedType);
-            if (playableAsset == null)
+            if (playableAsset != null)
             {
-                throw new System.InvalidOperationException("Could not create an instance of the ScriptableObject type " + requestedType.Name);
+                TimelineCreateUtilities.SaveAssetIntoObject(playableAsset, this);
+                var clip = CreateClipFromAsset(playableAsset);
+                AddClip(clip);
+                return clip;
             }
-            playableAsset.name = requestedType.Name;
-            TimelineCreateUtilities.SaveAssetIntoObject(playableAsset, this);
-
-            return CreateClipFromAsset(playableAsset);
+            return null;
         }
 
         private TimelineClip CreateClipFromAsset(ScriptableObject playableAsset)

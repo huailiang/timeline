@@ -17,7 +17,7 @@ namespace UnityEngine.Timeline
 
     public class DirectorSystem
     {
-        
+
         public static TrackType UtilTrackType(TrackAsset track)
         {
             if (track is AudioTrack)
@@ -44,6 +44,10 @@ namespace UnityEngine.Timeline
             {
                 return TrackType.BONEFX;
             }
+            if (track is MarkerTrack)
+            {
+                return TrackType.MARKER;
+            }
             return TrackType.NONE;
         }
 
@@ -66,6 +70,7 @@ namespace UnityEngine.Timeline
             }
             return tp;
         }
+
 
         public static PlayableAsset CreateClipAsset(TrackType type)
         {

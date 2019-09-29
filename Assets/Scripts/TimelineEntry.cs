@@ -45,16 +45,6 @@ public class TimelineEntry : MonoBehaviour
             sign.jumpTime = 0;
             output.PushNotification(Playable.Null, sign);
         }
-        if (Input.GetKeyUp(KeyCode.F2))
-        {
-            if (loader == null) loader = new TimelineLoader();
-            if (director)
-            {
-                string path = Application.dataPath + "/Res/TIMELINE.bytes";
-                Debug.Log(path);
-                loader.Load(path, director);
-            }
-        }
         if (Input.GetKeyUp(KeyCode.F3))
         {
             director.Pause();
@@ -64,6 +54,18 @@ public class TimelineEntry : MonoBehaviour
         {
             backward = false;
             director.Play();
+        }
+        if (Input.GetKeyUp(KeyCode.F5))
+        {
+            if (loader == null) loader = new TimelineLoader();
+            if (director)
+            {
+                string path = Application.dataPath + "/Res/TIMELINE.bytes";
+                Debug.Log(path);
+                loader.Load(path, director);
+                director.RebuildGraph();
+                director.Play();
+            }
         }
         if (backward)
         {

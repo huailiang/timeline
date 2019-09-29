@@ -11,6 +11,7 @@ namespace UnityEngine.Timeline
 
         private XTrackAsset[] _trackAssets;
 
+        private ScriptPlayable<XPlayableBehaviour> _behaviour;
 
         public XTrackAsset[] TrackAssets
         {
@@ -41,7 +42,28 @@ namespace UnityEngine.Timeline
 
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            throw new System.NotImplementedException();
+            var beh = _behaviour.GetBehaviour();
+            if (beh == null)
+            {
+                _behaviour = CreateBehaviour(graph);
+                beh = _behaviour.GetBehaviour();
+            }
+            int count = graph.GetPlayableCount();
+            beh.Compile(ref graph, this, _behaviour, owner, count == 1);
+            if (_behaviour.IsValid())
+            {
+                return _behaviour;
+            }
+            return Playable.Null;
+        }
+
+
+        private ScriptPlayable<XPlayableBehaviour> CreateBehaviour(PlayableGraph graph)
+        {
+            var playable = ScriptPlayable<XPlayableBehaviour>.Create(graph);
+            playable.SetTraversalMode(PlayableTraversalMode.Passthrough);
+            playable.SetPropagateSetTime(true);
+            return playable;
         }
 
         public void SetDuration(double duration)

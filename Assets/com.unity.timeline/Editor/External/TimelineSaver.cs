@@ -30,7 +30,7 @@ public class TimelineSaver
 
     private static void SaveAsset(TimelineAsset asset)
     {
-        string path = Application.dataPath + "/Res/" + asset.name + ".byte";
+        string path = Application.dataPath + "/Res/" + asset.name + ".bytes";
         Debug.Log(path);
         FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
         BinaryWriter bw = new BinaryWriter(fs);
@@ -54,18 +54,7 @@ public class TimelineSaver
             SaveTrack(it, bw);
         }
     }
-
-    private static void AnalyTrack(TimelineAsset asset)
-    {
-        m_tracks.Clear();
-        var tracks = asset.GetRootTracks();
-        foreach (var track in tracks)
-        {
-            m_tracks.Add(track);
-            AnalyTrack(track);
-        }
-    }
-
+    
 
     private static void SaveTrack(TrackAsset track, BinaryWriter bw)
     {
@@ -76,6 +65,7 @@ public class TimelineSaver
         bw.Write((int)type);
         int parent = m_tracks.IndexOf(track.parent as TrackAsset);
         bw.Write(parent);
+        bw.Write(track.mutedInHierarchy);
         Object bindObj = director.GetGenericBinding(bindingDict[track.name]);
         string bind = bindObj ? bindObj.name : "";
         bw.Write(bind);
@@ -93,6 +83,7 @@ public class TimelineSaver
 
         //track markers
         var markers = track.GetMarkers();
+        bw.Write(markers.Count());
         foreach (var it in markers)
         {
             SaveMarker(it, bw);
@@ -137,6 +128,17 @@ public class TimelineSaver
         }
     }
 
+
+    private static void AnalyTrack(TimelineAsset asset)
+    {
+        m_tracks.Clear();
+        var tracks = asset.GetRootTracks();
+        foreach (var track in tracks)
+        {
+            m_tracks.Add(track);
+            AnalyTrack(track);
+        }
+    }
 
     private static void AnalyTrack(TrackAsset track)
     {
