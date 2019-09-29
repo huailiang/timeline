@@ -92,28 +92,19 @@ namespace UnityEngine.Timeline
             }
 
             var notificationsPlayable = CreateNotificationsPlayable(graph, mixerPlayable, go, timelinePlayable);
-            if (!notificationsPlayable.IsValid() && !mixerPlayable.IsValid())
+
+            bool v1 = notificationsPlayable.IsValid();
+            bool v2 = mixerPlayable.IsValid();
+            if (!v1 && !v2)
             {
                 Debug.LogErrorFormat("Track {0} of type {1} has no notifications and returns an invalid mixer Playable", name,
                     GetType().FullName);
 
                 return Playable.Create(graph);
             }
-
-            var playableGraph = m_Markers.Count > 0 ? notificationsPlayable : mixerPlayable;
-            ConfigureTrackAnimation(tree, go, playableGraph);
-
-            return playableGraph;
+            return m_Markers.HasNotifications() ? notificationsPlayable : mixerPlayable;
         }
 
-        void ConfigureTrackAnimation(IntervalTree<RuntimeElement> tree, GameObject go, Playable blend)
-        {
-            if (trackType == TrackType.ANIMTION)
-            {
-                //blend.SetAnimatedProperties(m_Curves);
-                tree.Add(new InfiniteRuntimeClip(blend));
-            }
-        }
 
         Playable CreateNotificationsPlayable(PlayableGraph graph, Playable mixerPlayable, GameObject go, Playable timelinePlayable)
         {

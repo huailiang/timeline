@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Animations;
-using UnityEngine.Audio;
 using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
@@ -81,17 +80,11 @@ namespace UnityEngine.Timeline
             var bindings = track.outputs;
             foreach (var binding in bindings)
             {
-                var playableOutput = binding.CreateOutput(graph);
+                PlayableOutput playableOutput = binding.CreateOutput(graph);
                 playableOutput.SetReferenceObject(binding.sourceObject);
                 playableOutput.SetSourcePlayable(playable);
                 playableOutput.SetSourceOutputPort(port);
                 playableOutput.SetWeight(1.0f);
-
-                // only apply this on our animation track
-                if (track.trackType == TrackType.ANIMTION)
-                    EvaluateWeightsForAnimationPlayableOutput((AnimationPlayableOutput)playableOutput);
-                if (playableOutput.IsPlayableOutputOfType<AudioPlayableOutput>())
-                    ((AudioPlayableOutput)playableOutput).SetEvaluateOnSeek(true);
             }
         }
 
