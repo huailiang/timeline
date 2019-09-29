@@ -90,6 +90,11 @@ public class LoadTimeline
         int type = reader.ReadInt32();
         int parent = reader.ReadInt32();
         Marker marker = CreateMarker((MarkType)type);
+        if (marker is IDirectorIO)
+        {
+            var io = marker as IDirectorIO;
+            io.Load(reader);
+        }
         if (marker)
         {
             track.AddMarker(marker);

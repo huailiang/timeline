@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine.Playables;
 
 
@@ -8,11 +9,15 @@ namespace UnityEngine.Timeline
     [Serializable]
     [CustomStyle("JumpSignalEmmiter")]
     [MarkerAttribute(TrackType.MARKER)]
-    public class JumpSignalEmmiter : Marker, IXMarker, INotification, INotificationOptionProvider
+    public class JumpSignalEmmiter : Marker,
+        IXMarker,
+        INotification,
+        INotificationOptionProvider,
+        IDirectorIO
     {
         [SerializeField] bool m_EmitOnce;
         [SerializeField] float m_JumpTime;
-  
+
 
         public bool emitOnce
         {
@@ -44,7 +49,19 @@ namespace UnityEngine.Timeline
                     NotificationFlags.TriggerInEditMode;
             }
         }
-    }
 
+        public void Load(BinaryReader reader)
+        {
+            jumpTime = reader.ReadSingle();
+            m_EmitOnce = reader.ReadBoolean();
+        }
+
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(jumpTime);
+            writer.Write(m_EmitOnce);
+        }
+
+    }
 
 }

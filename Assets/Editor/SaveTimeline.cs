@@ -67,22 +67,6 @@ public class SaveTimeline
         }
     }
 
-    private static void AnalyTrack(TrackAsset track)
-    {
-        var childs = track.GetChildTracks();
-        foreach (var it in childs)
-        {
-            m_tracks.Add(it);
-            AnalyTrack(it);
-        }
-    }
-
-
-    private static void AnalyBinding(PlayableAsset asset)
-    {
-        bindingDict = asset.outputs.
-        ToDictionary(k => k.streamName, v => v.sourceObject);
-    }
 
     private static void SaveTrack(TrackAsset track, BinaryWriter bw)
     {
@@ -127,6 +111,11 @@ public class SaveTimeline
         bw.Write(clip.blendOutDuration);
         bw.Write(clip.easeInDuration);
         bw.Write(clip.easeOutDuration);
+        if (clip.asset is IDirectorIO)
+        {
+            var io = clip.asset as IDirectorIO;
+            io.Write(bw);
+        }
     }
 
 
@@ -142,6 +131,29 @@ public class SaveTimeline
         bw.Write(marker.time);
         bw.Write((int)type);
         bw.Write(parent);
+        if (marker is IDirectorIO)
+        {
+            var io = marker as IDirectorIO;
+            io.Write(bw);
+        }
+    }
+
+
+    private static void AnalyTrack(TrackAsset track)
+    {
+        var childs = track.GetChildTracks();
+        foreach (var it in childs)
+        {
+            m_tracks.Add(it);
+            AnalyTrack(it);
+        }
+    }
+
+
+    private static void AnalyBinding(PlayableAsset asset)
+    {
+        bindingDict = asset.outputs.
+            ToDictionary(k => k.streamName, v => v.sourceObject);
     }
 
 }

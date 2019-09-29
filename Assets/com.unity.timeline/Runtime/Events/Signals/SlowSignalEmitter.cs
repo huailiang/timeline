@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
@@ -7,7 +8,11 @@ namespace UnityEngine.Timeline
     [Serializable]
     [CustomStyle("SlowSignalEmitter")]
     [MarkerAttribute(TrackType.MARKER)]
-    public class SlowSignalEmitter : Marker, IXMarker, INotification, INotificationOptionProvider
+    public class SlowSignalEmitter : Marker,
+        IXMarker, 
+        INotification, 
+        INotificationOptionProvider,
+        IDirectorIO
     {
         [SerializeField] bool m_Retroactive;
         [SerializeField] bool m_EmitOnce;
@@ -46,6 +51,21 @@ namespace UnityEngine.Timeline
                     (emitOnce ? NotificationFlags.TriggerOnce : default(NotificationFlags)) |
                     NotificationFlags.TriggerInEditMode;
             }
+        }
+
+
+        public void Load(BinaryReader reader)
+        {
+            m_SlowRate = reader.ReadSingle();
+            m_Retroactive = reader.ReadBoolean();
+            m_EmitOnce = reader.ReadBoolean();
+        }
+
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(m_SlowRate);
+            writer.Write(m_Retroactive);
+            writer.Write(m_EmitOnce);
         }
     }
 

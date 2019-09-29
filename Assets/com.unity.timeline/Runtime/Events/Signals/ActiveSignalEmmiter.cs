@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
@@ -7,7 +8,11 @@ namespace UnityEngine.Timeline
     [Serializable]
     [CustomStyle("ActiveSignalmEmitter")]
     [Marker(TrackType.ANIMTION | TrackType.CONTROL)]
-    public partial class ActiveSignalEmmiter : Marker,IXMarker, INotification, INotificationOptionProvider
+    public partial class ActiveSignalEmmiter : Marker,
+        IXMarker,
+        INotification,
+        INotificationOptionProvider,
+        IDirectorIO
     {
         [SerializeField] protected bool m_Retroactive;
         [SerializeField] protected bool m_EmitOnce;
@@ -35,7 +40,7 @@ namespace UnityEngine.Timeline
 
         public PropertyName id
         {
-            get { return new PropertyName("QteLongPressSignal"); }
+            get { return new PropertyName("ActiveSignalEmmiter"); }
         }
 
         public MarkType markType => MarkType.ACTIVE;
@@ -49,6 +54,21 @@ namespace UnityEngine.Timeline
                     NotificationFlags.TriggerInEditMode;
             }
         }
+
+        public void Load(BinaryReader reader)
+        {
+            m_active = reader.ReadBoolean();
+            m_Retroactive = reader.ReadBoolean();
+            m_EmitOnce = reader.ReadBoolean();
+        }
+
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(m_active);
+            writer.Write(m_Retroactive);
+            writer.Write(m_EmitOnce);
+        }
+
     }
 
 }

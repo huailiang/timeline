@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class AnchorAsset : PlayableAsset, IDirector
+public class AnchorAsset : PlayableAsset, IDirectorIO
 {
     
     [SerializeField] AnimationCurve[] m_Clip_Pos;
@@ -50,7 +50,7 @@ public class AnchorAsset : PlayableAsset, IDirector
     }
 
 
-    public void OnSave(BinaryWriter writer)
+    public void Write(BinaryWriter writer)
     {
     }
 

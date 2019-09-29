@@ -1,5 +1,5 @@
 ﻿using System;
-using UnityEngine.Playables;
+using System.IO;
 
 namespace UnityEngine.Timeline
 {
@@ -7,7 +7,7 @@ namespace UnityEngine.Timeline
     [Serializable]
     [CustomStyle("AnchorSignalEmitter")]
     [Marker(TrackType.ANCHOR | TrackType.MARKER)]
-    public class AnchorSignalEmitter : Marker, IXMarker
+    public class AnchorSignalEmitter : Marker, IXMarker, IDirectorIO
     {
         [SerializeField] Vector3 m_Position = Vector3.zero;
 
@@ -27,5 +27,20 @@ namespace UnityEngine.Timeline
         }
 
         public MarkType markType => MarkType.ANCHOR;
+
+
+        public void Load(BinaryReader reader)
+        {
+            m_Position = reader.ReadVector3();
+            m_Rotation = reader.ReadVector3();
+        }
+
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(m_Position);
+            writer.Write(m_Rotation);
+        }
+
     }
+
 }

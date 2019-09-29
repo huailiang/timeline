@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class BoneFxAsset : PlayableAsset, IDirector
+public class BoneFxAsset : PlayableAsset, IDirectorIO
 {
 
     [SerializeField] public string prefab;
@@ -38,7 +38,7 @@ public class BoneFxAsset : PlayableAsset, IDirector
     }
 
 
-    public void OnSave(BinaryWriter writer)
+    public void Write(BinaryWriter writer)
     {
         writer.Write(pos);
         writer.Write(rot);
