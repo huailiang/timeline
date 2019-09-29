@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class BoneFxAsset : PlayableAsset
+public class BoneFxAsset : PlayableAsset, IDirector
 {
 
     [SerializeField] public string prefab;
@@ -22,8 +23,28 @@ public class BoneFxAsset : PlayableAsset
     {
         PlayableDirector dir = graph.GetResolver() as PlayableDirector;
         BoneFxBehaviour beha = new BoneFxBehaviour();
-        beha.Set(dir, prefab, fxPath, pos, rot,scale);
+        beha.Set(dir, prefab, fxPath, pos, rot, scale);
         return ScriptPlayable<BoneFxBehaviour>.Create(graph, beha);
+    }
+
+
+    public void Load(BinaryReader reader)
+    {
+        pos = reader.ReadVector3();
+        rot = reader.ReadVector3();
+        scale = reader.ReadVector3();
+        prefab = reader.ReadString();
+        fxPath = reader.ReadString();
+    }
+
+
+    public void OnSave(BinaryWriter writer)
+    {
+        writer.Write(pos);
+        writer.Write(rot);
+        writer.Write(scale);
+        writer.Write(prefab);
+        writer.Write(fxPath);
     }
 
 }

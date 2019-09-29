@@ -13,8 +13,9 @@ public class XTrackAsset : PlayableAsset
     private DiscreteTime m_Start;
     private DiscreteTime m_End;
     private PlayableAsset m_Parent;
+    private XTrackType trackType;
+    private string m_Name;
 
-    public XTrackType trackType;
     public Playable playable;
     public PlayableOutput playableOutput;
 
@@ -30,8 +31,18 @@ public class XTrackAsset : PlayableAsset
     public PlayableAsset parent
     {
         get { return m_Parent; }
-        internal set { m_Parent = value; }
+        set { m_Parent = value; }
     }
+
+    public override IEnumerable<PlayableBinding> outputs
+    {
+        get
+        {
+            Type type = DirectorSystem.UtilTrackType(trackType);
+            yield return ScriptPlayableBinding.Create(m_Name, this, type);
+        }
+    }
+
 
     protected virtual void OnCreateClip(TimelineClip clip) { }
     public virtual Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
@@ -87,6 +98,7 @@ public class XTrackAsset : PlayableAsset
     {
         m_Start = (DiscreteTime)reader.ReadDouble();
         m_End = (DiscreteTime)reader.ReadDouble();
+        m_Name = reader.ReadString();
         trackType = (XTrackType)reader.ReadInt32();
     }
 
@@ -102,7 +114,7 @@ public class XTrackAsset : PlayableAsset
     }
 
 
-    internal TimelineClip CreateAndAddNewClipOfType(Type requestedType)
+    public TimelineClip CreateAndAddNewClipOfType(Type requestedType)
     {
         var newClip = CreateClipOfType(requestedType);
         AddClip(newClip);

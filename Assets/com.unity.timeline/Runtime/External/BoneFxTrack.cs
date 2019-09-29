@@ -1,5 +1,5 @@
 ﻿using UnityEngine.Timeline;
-using UnityEngine;
+
 #if UNITY_EDITOR
 #endif
 
@@ -12,11 +12,11 @@ public class BoneFxTrack : TrackAsset
 
     protected override void OnCreateClip(TimelineClip clip)
     {
-        Debug.Log("create clip");
         clip.duration = 2f;
         base.OnCreateClip(clip);
         BoneFxAsset asset = clip.asset as BoneFxAsset;
         asset.track = this.parent as TrackAsset;
+        clip.displayName = "BoneFX";
     }
 
 

@@ -3,12 +3,29 @@ using UnityEngine;
 
 namespace UnityEngine.Timeline
 {
+
+    public enum TimelinePlayMode
+    {
+        EDITOR,
+        PREVIEWPLAYING,
+        RUNPLAYING,
+    }
+
     public class TimelineUtil
     {
 
         private static PlayableDirector _director;
+
         private static IInterface m_Interface;
-        
+
+        private static TimelinePlayMode _playMode;
+
+        public static TimelinePlayMode playMode
+        {
+            get { return _playMode; }
+            set { _playMode = value; }
+        }
+
 
         public static PlayableDirector Director
         {

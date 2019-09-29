@@ -88,7 +88,8 @@ public class SaveTimeline
     {
         bw.Write(track.start);
         bw.Write(track.end);
-        var type = DirectorType.UtilTrackType(track);
+        bw.Write(track.name);
+        var type = DirectorSystem.UtilTrackType(track);
         bw.Write((int)type);
         int parent = m_tracks.IndexOf(track.parent as TrackAsset);
         bw.Write(parent);

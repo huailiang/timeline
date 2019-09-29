@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class AnchorAsset : PlayableAsset
+public class AnchorAsset : PlayableAsset, IDirector
 {
     
     [SerializeField] AnimationCurve[] m_Clip_Pos;
@@ -42,6 +43,15 @@ public class AnchorAsset : PlayableAsset
         AnchorBehaviour beha = new AnchorBehaviour();
         beha.Set(clip_pos, clip_rot, tf, director);
         return ScriptPlayable<AnchorBehaviour>.Create(graph, beha);
+    }
+
+    public void Load(BinaryReader reader)
+    {
+    }
+
+
+    public void OnSave(BinaryWriter writer)
+    {
     }
 
 }

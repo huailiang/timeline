@@ -19,6 +19,8 @@ public class TimelineEntry : MonoBehaviour
         TimelineUtil.Interface = imp;
         imp.notify = OnNotify;
         backward = false;
+        TimelineUtil.playMode = Application.isPlaying ?
+            TimelinePlayMode.RUNPLAYING : TimelinePlayMode.EDITOR;
     }
 
     void Start()
@@ -65,11 +67,6 @@ public class TimelineEntry : MonoBehaviour
         {
             GUI.Label(rect, "frame: " + (director.time * 30).ToString("f0"), style);
         }
-    }
-
-    public void OnRecSignal1()
-    {
-        Debug.Log("recv signal 1" + name);
     }
 
     public void JumpTo(float time)

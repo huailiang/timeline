@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.IO;
 using UnityEngine.Timeline;
 
 
@@ -15,7 +16,17 @@ public enum XTrackType
     NONE = 100
 }
 
-public class DirectorType
+
+public interface IDirector
+{
+    void Load(BinaryReader reader);
+
+
+    void OnSave(BinaryWriter writer);
+
+}
+
+public class DirectorSystem
 {
 
 
