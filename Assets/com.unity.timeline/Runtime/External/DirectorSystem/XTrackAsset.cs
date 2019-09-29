@@ -13,7 +13,7 @@ namespace UnityEngine.Timeline
         private DiscreteTime m_Start;
         private DiscreteTime m_End;
         private PlayableAsset m_Parent;
-        private XTrackType trackType;
+        private TrackType m_TrackType;
         private string m_Name;
 
         public Playable playable;
@@ -34,11 +34,21 @@ namespace UnityEngine.Timeline
             set { m_Parent = value; }
         }
 
+        public TrackType trackType
+        {
+            get { return m_TrackType; }
+        }
+
+        public bool isSubTrack
+        {
+            get { return m_Parent == null; }
+        }
+
         public override IEnumerable<PlayableBinding> outputs
         {
             get
             {
-                Type type = DirectorSystem.UtilTrackType(trackType);
+                Type type = DirectorSystem.UtilTrackType(m_TrackType);
                 yield return ScriptPlayableBinding.Create(m_Name, this, type);
             }
         }
@@ -99,7 +109,7 @@ namespace UnityEngine.Timeline
             m_Start = (DiscreteTime)reader.ReadDouble();
             m_End = (DiscreteTime)reader.ReadDouble();
             m_Name = reader.ReadString();
-            trackType = (XTrackType)reader.ReadInt32();
+            m_TrackType = (TrackType)reader.ReadInt32();
         }
 
 

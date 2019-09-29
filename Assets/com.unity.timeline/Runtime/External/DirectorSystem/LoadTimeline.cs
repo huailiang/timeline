@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class LoadTimeline
+public class TimelineLoader
 {
 
     private XPlayableAsset asset;
@@ -46,11 +46,10 @@ public class LoadTimeline
             track.parent = parentTrack;
         }
         string bind = reader.ReadString();
-
         if (!string.IsNullOrEmpty(bind))
         {
             GameObject bindGo = GameObject.Find(bind);
-            // director.SetGenericBinding(track, bindGo);
+            director.SetGenericBinding(track, bindGo);
         }
 
         //clips
@@ -81,6 +80,9 @@ public class LoadTimeline
         clip.easeInDuration = reader.ReadDouble();
         clip.easeOutDuration = reader.ReadDouble();
         track.AddClip(clip);
+
+        var asset = DirectorSystem.CreateClipAsset(track.trackType);
+        if (asset) clip.asset = asset;
     }
 
 
@@ -89,7 +91,7 @@ public class LoadTimeline
         double time = reader.ReadDouble();
         int type = reader.ReadInt32();
         int parent = reader.ReadInt32();
-        Marker marker = CreateMarker((MarkType)type);
+        Marker marker = DirectorSystem.CreateMarker((MarkType)type);
         if (marker is IDirectorIO)
         {
             var io = marker as IDirectorIO;
@@ -101,26 +103,5 @@ public class LoadTimeline
         }
     }
 
-
-    private Marker CreateMarker(MarkType type)
-    {
-        Marker marker = null;
-        switch (type)
-        {
-            case MarkType.ACTIVE:
-                marker = ScriptableObject.CreateInstance<ActiveSignalEmmiter>();
-                break;
-            case MarkType.ANCHOR:
-                marker = ScriptableObject.CreateInstance<AnchorSignalEmitter>();
-                break;
-            case MarkType.JUMP:
-                marker = ScriptableObject.CreateInstance<JumpSignalEmmiter>();
-                break;
-            case MarkType.SLOW:
-                marker = ScriptableObject.CreateInstance<SlowSignalEmitter>();
-                break;
-        }
-        return marker;
-    }
 
 }

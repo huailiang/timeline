@@ -23,9 +23,12 @@ namespace UnityEngine.Timeline
         NONE = 0,
         MARKER = 1,
         ANIMTION = 1 << 1,
-        CONTROL = 1 << 2,
-        ANCHOR = 1 << 3,
-        OTHER = 1 << 7 // put other at last
+        ACTIVE = 1 << 2,
+        CONTROL = 1 << 3,
+        AUDIO = 1 << 4,
+        ANCHOR = 1 << 5,
+        BONEFX = 1 << 6,
+        OTHER = 1 << 31 // put other at last
     }
 
 

@@ -5,7 +5,7 @@ using UnityEngine.Timeline;
 using System.Linq;
 
 [CustomEditor(typeof(PlayableDirector))]
-public class TimelineEditor : Editor
+public class DirectorInspector : Editor
 {
     private PlayableDirector director;
     private Color[] gizColors = { Color.red, Color.green, Color.white };

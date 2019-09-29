@@ -8,6 +8,7 @@ public class TimelineEntry : MonoBehaviour
 
     PlayableDirector director;
     TimelineImp imp;
+    TimelineLoader loader;
     private bool backward;
     private GUIStyle style = new GUIStyle();
     private Rect rect = new Rect(20, 20, 150, 40);
@@ -43,6 +44,16 @@ public class TimelineEntry : MonoBehaviour
             JumpSignalEmmiter sign = ScriptableObject.CreateInstance<JumpSignalEmmiter>();
             sign.jumpTime = 0;
             output.PushNotification(Playable.Null, sign);
+        }
+        if (Input.GetKeyUp(KeyCode.F2))
+        {
+            if (loader == null) loader = new TimelineLoader();
+            if (director)
+            {
+                string path = Application.dataPath + "/Res/TIMELINE.bytes";
+                Debug.Log(path);
+                loader.Load(path, director);
+            }
         }
         if (Input.GetKeyUp(KeyCode.F3))
         {

@@ -1,52 +1,43 @@
-﻿using System;
-using UnityEditor;
-using UnityEditor.Timeline;
+﻿using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 
-namespace UnityEngine.Timeline
+namespace UnityEditor.Timeline.Signals
 {
-
-    [CustomTimelineEditor(typeof(AnchorAsset))]
-    class ArchorSignalEditor : ClipEditor
+    [CustomEditor(typeof(AnchorSignalEmitter))]
+    public class ArchorSignalEditor : Editor
     {
+        TrackAsset track;
+        AnchorSignalEmitter signal;
+        Transform bindTf;
 
-        Color32 backg = new Color32(1, 1, 1, 0);
-        Color[] cSeq = { Color.red, Color.green, Color.blue };
-        AnchorTrack target;
-
-
-        public override void DrawBackground(TimelineClip clip, ClipBackgroundRegion region)
+        private void OnEnable()
         {
-            AnchorAsset asset = clip.asset as AnchorAsset;
-            Rect rect = region.position;
-            TrackAsset track = clip.parentTrack;
-            target = track as AnchorTrack;
-            if (target != null)
-            {
-                target.RebuildClip();
-            }
-            if (asset != null)
-            {
-                var quantizedRect = new Rect(Mathf.Ceil(rect.x), Mathf.Ceil(rect.y), Mathf.Ceil(rect.width), Mathf.Ceil(rect.height));
-                AnimationCurve[] curves = asset.clip_pos;
-                DrawCurve(rect, curves);
-            }
+            PlayableDirector director = GameObject.FindObjectOfType<PlayableDirector>();
+            signal = target as AnchorSignalEmitter;
+            track = signal.parent.parent as TrackAsset;
+            bindTf = ExternalHelp.FetchAttachOfTrack(director, track);
+        }
+
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            GUILayout.Space(4);
+            Execute();
+            GUILayout.Label("try drag transform option");
         }
 
 
 
-        private void DrawCurve(Rect rect, AnimationCurve[] curves)
+        private void Execute()
         {
-            if (curves != null)
+            if (bindTf)
             {
-                for (int i = 0; i < curves.Length; i++)
-                {
-                    EditorGUIUtility.DrawCurveSwatch(rect, curves[i], null, cSeq[i], backg);
-                }
+                bindTf.position = signal.position;
+                bindTf.localEulerAngles = signal.rotation;
             }
-
         }
 
     }
-
 }

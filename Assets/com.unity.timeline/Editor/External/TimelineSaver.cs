@@ -1,24 +1,23 @@
-﻿using UnityEngine;
-using UnityEngine.Playables;
-using UnityEngine.Timeline;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
-using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
-public class SaveTimeline
+public class TimelineSaver
 {
 
     private static PlayableDirector director;
     private static List<TrackAsset> m_tracks = new List<TrackAsset>();
     private static Dictionary<string, Object> bindingDict = new Dictionary<string, Object>();
 
-    [MenuItem("XEditor/Save _F2", priority = 2)]
-    public static void Save()
+    public static void Save(PlayableDirector dir)
     {
-        director = GameObject.FindObjectOfType<PlayableDirector>();
-        if (director != null)
+        if (dir != null)
         {
+            director = dir;
             AnalyBinding(director.playableAsset);
             SaveAsset(director.playableAsset as TimelineAsset);
         }
@@ -127,7 +126,7 @@ public class SaveTimeline
             type = (marker as IXMarker).markType;
         }
         int parent = m_tracks.IndexOf(marker.parent);
-        // Debug.Log("marker: " + type + " " + parent);
+        Debug.Log("marker: " + type + " " + parent);
         bw.Write(marker.time);
         bw.Write((int)type);
         bw.Write(parent);
