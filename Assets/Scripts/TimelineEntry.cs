@@ -3,6 +3,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 
+[ExecuteInEditMode]
 public class TimelineEntry : MonoBehaviour
 {
 
@@ -16,12 +17,14 @@ public class TimelineEntry : MonoBehaviour
     private void Awake()
     {
         director = GetComponent<PlayableDirector>();
+        DirectorSystem.Director = director;
         imp = new TimelineImp();
         TimelineUtil.Interface = imp;
         imp.notify = OnNotify;
         backward = false;
         TimelineUtil.playMode = Application.isPlaying ?
-            TimelinePlayMode.RUNPLAYING : TimelinePlayMode.EDITOR;
+            TimelinePlayMode.PREVIEWPLAYING :
+            TimelinePlayMode.EDITOR;
     }
 
     void Start()
@@ -61,10 +64,16 @@ public class TimelineEntry : MonoBehaviour
             if (director)
             {
                 string path = Application.dataPath + "/Res/TIMELINE.bytes";
-                Debug.Log(path);
                 loader.Load(path, director);
-                director.RebuildGraph();
-                director.Play();
+                if (director.playableGraph.IsValid())
+                {    
+                    //director.RebuildGraph();
+                    director.Play();
+                }
+                else
+                {
+                    Debug.LogError("director graph is invalid");
+                }
             }
         }
         if (backward)
@@ -110,10 +119,9 @@ public class TimelineEntry : MonoBehaviour
         {
             ActiveSignalEmmiter signal = notification as ActiveSignalEmmiter;
             TrackAsset track = TimelineUtil.GetRootTrack(signal);
-            Transform tf = ExternalHelp.FetchAttachOfTrack(director, track);
+            Transform tf = DirectorSystem.FetchAttachOfTrack(track);
             if (tf) tf.gameObject.SetActive(signal.Active);
         }
     }
 
-    
 }

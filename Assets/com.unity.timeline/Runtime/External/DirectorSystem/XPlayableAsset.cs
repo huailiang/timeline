@@ -1,75 +1,75 @@
-﻿using System.Collections.Generic;
-using UnityEngine.Playables;
+﻿using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
 {
 
-    public class XPlayableAsset : PlayableAsset
+    public class XPlayableBehaviour: PlayableBehaviour
     {
+        protected PlayableAsset asset;
 
-        private double _duration;
+        protected GameObject bindObj;
 
-        private XTrackAsset[] _trackAssets;
+        protected virtual void OnInitial() { }
 
-        private ScriptPlayable<XPlayableBehaviour> _behaviour;
-
-        public XTrackAsset[] TrackAssets
+        public void SetPlayableAsset(PlayableAsset asset, GameObject bind)
         {
-            get { return _trackAssets; }
-            set { _trackAssets = value; }
+            this.asset = asset;
+            this.bindObj = bind;
+            OnInitial();
+        }
+    }
+
+    public class ClipPlayaleAsset : PlayableAsset
+    {
+        protected GameObject bindObj;
+
+        public void SetBind(GameObject obj)
+        {
+            bindObj = obj;
         }
 
-        public override double duration
+        public void SetBind(Transform tf)
         {
-            get { return _duration; }
-        }
-
-        public override IEnumerable<PlayableBinding> outputs
-        {
-            get
+            if (tf)
             {
-                if (_trackAssets != null)
-                {
-                    for (int i = 0; i < _trackAssets.Length; i++)
-                    {
-                        var track = _trackAssets[i];
-                        foreach (var output in track.outputs)
-                            yield return output;
-                    }
-                }
+                bindObj = tf.gameObject;
             }
         }
+
+        public override Playable CreatePlayable(PlayableGraph graph, GameObject go)
+        {
+            return Playable.Null;
+        }
+    }
+
+
+    public class XPlayableAsset<TBehaviour> : ClipPlayaleAsset
+        where TBehaviour : XPlayableBehaviour, new()
+    {
+
+        protected TBehaviour behaviour;
+        
+
+        protected TBehaviour GetBehavior()
+        {
+            if (behaviour == null)
+            {
+                behaviour = new TBehaviour();
+            }
+            return behaviour as TBehaviour;
+        }
+
 
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            var beh = _behaviour.GetBehaviour();
-            if (beh == null)
+            if (behaviour == null)
             {
-                _behaviour = CreateBehaviour(graph);
-                beh = _behaviour.GetBehaviour();
+                behaviour = new TBehaviour();
+                behaviour.SetPlayableAsset(this, bindObj);
             }
-            int count = graph.GetPlayableCount();
-            beh.Compile(ref graph, this, _behaviour, owner, count == 1);
-            if (_behaviour.IsValid())
-            {
-                return _behaviour;
-            }
-            return Playable.Null;
+            return ScriptPlayable<TBehaviour>.Create(graph, behaviour);
         }
 
-
-        private ScriptPlayable<XPlayableBehaviour> CreateBehaviour(PlayableGraph graph)
-        {
-            var playable = ScriptPlayable<XPlayableBehaviour>.Create(graph);
-            playable.SetTraversalMode(PlayableTraversalMode.Passthrough);
-            playable.SetPropagateSetTime(true);
-            return playable;
-        }
-
-        public void SetDuration(double duration)
-        {
-            _duration = duration;
-        }
 
     }
 

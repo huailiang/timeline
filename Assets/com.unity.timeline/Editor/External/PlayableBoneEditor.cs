@@ -11,7 +11,6 @@ namespace UnityEngine.Timeline
         private GameObject boneGo;
         private GameObject prefabGo;
         private GameObject go;
-        private PlayableDirector director;
 
         string GetRootFullPath(Transform tf)
         {
@@ -23,16 +22,11 @@ namespace UnityEngine.Timeline
             }
             return path;
         }
-
-
+        
 
         public override void OnInspectorGUI()
         {
             BoneFxAsset asset = target as BoneFxAsset;
-            if (director == null)
-            {
-                director = GameObject.FindObjectOfType<PlayableDirector>();
-            }
             EditorGUILayout.Space();
             prefabGo = EditorGUILayout.ObjectField("Fx Prefab", prefabGo, typeof(GameObject), true) as GameObject;
             if (prefabGo != null)
@@ -68,8 +62,8 @@ namespace UnityEngine.Timeline
             {
                 if (asset.track != null)
                 {
-                    var binding = director.GetGenericBinding(asset.track);
-                    Transform tf = ExternalHelp.FetchAttachOfTrack(director, asset.track);
+                    var binding = DirectorSystem.Director.GetGenericBinding(asset.track);
+                    Transform tf = DirectorSystem.FetchAttachOfTrack(asset.track);
                     if (tf)
                     {
                         tf = tf.GetChild(0).Find(asset.fxPath);

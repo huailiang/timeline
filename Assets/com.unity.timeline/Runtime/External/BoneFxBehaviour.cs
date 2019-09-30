@@ -107,9 +107,6 @@ public class BoneFxBehaviour : PlayableBehaviour
             _fx_obj = null;
         }
     }
-
-    public override void PrepareFrame(Playable playable, FrameData info)
-    {
-    }
+    
 
 }

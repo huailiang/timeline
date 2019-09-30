@@ -34,14 +34,17 @@ public class DirectorInspector : Editor
         {
             director = GameObject.FindObjectOfType<PlayableDirector>();
         }
-        var list = director.playableAsset.outputs;
-        int idx = 0;
-        foreach (PlayableBinding pb in list)
+        if (director.playableAsset != null)
         {
-            if (pb.sourceObject is AnchorTrack)
+            var list = director.playableAsset.outputs;
+            int idx = 0;
+            foreach (PlayableBinding pb in list)
             {
-                AnchorTrack tack = pb.sourceObject as AnchorTrack;
-                DrawAnchorTrack(tack, idx++);
+                if (pb.sourceObject is AnchorTrack)
+                {
+                    AnchorTrack tack = pb.sourceObject as AnchorTrack;
+                    DrawAnchorTrack(tack, idx++);
+                }
             }
         }
     }

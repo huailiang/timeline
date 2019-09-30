@@ -8,7 +8,7 @@ namespace UnityEngine.Timeline
     [Serializable]
     [CustomStyle("ActiveSignalmEmitter")]
     [Marker(TrackType.ANIMTION | TrackType.CONTROL)]
-    public partial class ActiveSignalEmmiter : Marker,
+    public class ActiveSignalEmmiter : Marker,
         IXMarker,
         INotification,
         INotificationOptionProvider,

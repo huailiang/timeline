@@ -5,7 +5,6 @@ using UnityEngine.Playables;
 namespace UnityEngine.Timeline
 {
 
-
     public interface IDirectorIO
     {
         void Load(BinaryReader reader);
@@ -17,6 +16,8 @@ namespace UnityEngine.Timeline
 
     public class DirectorSystem
     {
+
+        public static PlayableDirector Director { get; set; }
 
         public static TrackType UtilTrackType(TrackAsset track)
         {
@@ -119,6 +120,33 @@ namespace UnityEngine.Timeline
                     break;
             }
             return marker;
+        }
+
+        public static Transform FetchAttachOfTrack(TrackAsset track)
+        {
+            if (track && Director)
+            {
+                while (true)
+                {
+                    var parent = track.parent as TrackAsset;
+                    if (parent == null) break;
+                    else track = parent;
+                }
+                var binding = Director.GetGenericBinding(track);
+                if (binding is Animator)
+                {
+                    return (binding as Animator).transform;
+                }
+                else if (binding is Animation)
+                {
+                    return (binding as Animation).transform;
+                }
+                else if (binding is GameObject)
+                {
+                    return (binding as GameObject).transform;
+                }
+            }
+            return null;
         }
 
     }

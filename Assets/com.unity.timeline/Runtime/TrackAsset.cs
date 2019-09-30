@@ -28,8 +28,9 @@ namespace UnityEngine.Timeline
         [NonSerialized] int m_ItemsHash;
         [NonSerialized] TimelineClip[] m_ClipsCache;
 
-        DiscreteTime m_Start;
-        DiscreteTime m_End;
+       
+        protected double m_Start;
+        protected double m_End;
         bool m_CacheSorted;
         bool? m_SupportsNotifications;
 
@@ -40,7 +41,7 @@ namespace UnityEngine.Timeline
 
         [SerializeField, HideInInspector] protected internal List<TimelineClip> m_Clips = new List<TimelineClip>();
 
-        [SerializeField, HideInInspector] MarkerList m_Markers = new MarkerList(0);
+        [SerializeField, HideInInspector] protected MarkerList m_Markers = new MarkerList(0);
 
 #if UNITY_EDITOR
         internal int DirtyIndex { get; private set; }
@@ -598,7 +599,7 @@ namespace UnityEngine.Timeline
             return CreateClipFromAsset(asset as ScriptableObject);
         }
 
-        private TimelineClip CreateClipFromAsset(ScriptableObject playableAsset)
+        public TimelineClip CreateClipFromAsset(ScriptableObject playableAsset)
         {
             TimelineUndo.PushUndo(this, "Create Clip");
 
@@ -985,8 +986,8 @@ namespace UnityEngine.Timeline
             double trackStart, trackDuration;
             GetSequenceTime(out trackStart, out trackDuration);
 
-            m_Start = (DiscreteTime)trackStart;
-            m_End = (DiscreteTime)(trackStart + trackDuration);
+            m_Start = trackStart;
+            m_End = (trackStart + trackDuration);
 
             // calculate the extrapolations time.
             // TODO Extrapolation time should probably be extracted from the SequenceClip so only a track is aware of it.

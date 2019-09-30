@@ -121,12 +121,12 @@ namespace UnityEngine.Timeline
             return b.m_DiscreteTime;
         }
 
-        public static explicit operator DiscreteTime(double time)
+        public static implicit operator DiscreteTime(double time)
         {
             return new DiscreteTime(time);
         }
 
-        public static explicit operator DiscreteTime(float time)
+        public static implicit operator DiscreteTime(float time)
         {
             return new DiscreteTime(time);
         }

@@ -135,7 +135,7 @@ namespace UnityEngine.Timeline
             }
         }
 
-        void CreateTrackOutput(PlayableGraph graph, TrackAsset track, GameObject go, Playable playable, int port)
+        protected void CreateTrackOutput(PlayableGraph graph, TrackAsset track, GameObject go, Playable playable, int port)
         {
             if (track.isSubTrack)
                 return;
@@ -178,7 +178,7 @@ namespace UnityEngine.Timeline
             return asset.CreatePlayableGraph(graph, go, tree, timelinePlayable);
         }
 
-        private Playable CreateTrackPlayable(PlayableGraph graph, Playable timelinePlayable, TrackAsset track, GameObject go, bool createOutputs)
+        protected Playable CreateTrackPlayable(PlayableGraph graph, Playable timelinePlayable, TrackAsset track, GameObject go, bool createOutputs)
         {
             if (!track.IsCompilable()) // where parents are not compilable (group tracks)
                 return timelinePlayable;

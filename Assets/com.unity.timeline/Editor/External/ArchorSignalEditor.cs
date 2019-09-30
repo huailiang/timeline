@@ -17,7 +17,7 @@ namespace UnityEditor.Timeline.Signals
             PlayableDirector director = GameObject.FindObjectOfType<PlayableDirector>();
             signal = target as AnchorSignalEmitter;
             track = signal.parent.parent as TrackAsset;
-            bindTf = ExternalHelp.FetchAttachOfTrack(director, track);
+            bindTf = DirectorSystem.FetchAttachOfTrack(track);
         }
 
         public override void OnInspectorGUI()

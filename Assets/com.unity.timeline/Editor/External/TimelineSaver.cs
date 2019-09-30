@@ -58,11 +58,12 @@ public class TimelineSaver
 
     private static void SaveTrack(TrackAsset track, BinaryWriter bw)
     {
-        bw.Write(track.start);
-        bw.Write(track.end);
         bw.Write(track.name);
         var type = DirectorSystem.UtilTrackType(track);
         bw.Write((int)type);
+        bw.Write(track.start);
+        bw.Write(track.end);
+       
         int parent = m_tracks.IndexOf(track.parent as TrackAsset);
         bw.Write(parent);
         bw.Write(track.mutedInHierarchy);
@@ -70,7 +71,7 @@ public class TimelineSaver
         string bind = bindObj ? bindObj.name : "";
         bw.Write(bind);
 
-        Debug.Log("track: " + track.name + " " + type + " " + parent + " " + bind);
+        Debug.Log("track: " + " " + type + " " + parent + " " + bind + " " + (track.end - track.start));
 
         //track clips
         track.SortClips();
