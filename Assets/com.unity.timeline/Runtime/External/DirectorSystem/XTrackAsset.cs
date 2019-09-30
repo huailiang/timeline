@@ -11,7 +11,7 @@ namespace UnityEngine.Timeline
         public Playable playable;
         public PlayableOutput playableOutput;
         public GameObject bindObj;
-        private int m_ParentIndex;
+        public int parentIndex;
         protected TrackType m_TrackType;
 
         public TrackType trackType
@@ -35,7 +35,7 @@ namespace UnityEngine.Timeline
             m_TrackType = (TrackType)reader.ReadInt32();
             m_Start = reader.ReadDouble();
             m_End = reader.ReadDouble();
-            m_ParentIndex = reader.ReadInt32();
+            parentIndex = reader.ReadInt32();
             muted = reader.ReadBoolean();
         }
 
@@ -48,10 +48,24 @@ namespace UnityEngine.Timeline
         {
             if (playable)
             {
-                if (m_ParentIndex >= 0)
-                    parent = playable.TrackAssets[m_ParentIndex];
+                if (parentIndex >= 0)
+                {
+                    XTrackAsset pTrack = playable.TrackAssets[parentIndex];
+                    this.parent = pTrack;
+                    int cnt = m_Clips.Count;
+                    for (int i = 0; i < cnt; i++)
+                    {
+                        var playableAsset = m_Clips[i].asset as ClipPlayaleAsset;
+                        if (playableAsset)
+                        {
+                            playableAsset.SetBind(pTrack.bindObj); ;
+                        }
+                    }
+                }
                 else
+                {
                     parent = playable;
+                }
             }
         }
 

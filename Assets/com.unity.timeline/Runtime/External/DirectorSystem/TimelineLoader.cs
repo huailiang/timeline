@@ -44,6 +44,7 @@ namespace UnityEngine.Timeline
             {
                 tracks[i].OnPostLoad(asset);
             }
+            
             asset.name = director.name;
             asset.SetSpeed(1);
             director.playableAsset = asset;

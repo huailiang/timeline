@@ -8,7 +8,6 @@ namespace UnityEngine.Timeline
         const int CURVE_CNT = 3;
         [SerializeField] AnimationCurve[] m_Clip_Pos;
         [SerializeField] AnimationCurve[] m_Clip_Rot;
-        //[SerializeField] TrackAsset m_Track;
 
         public AnimationCurve[] clip_pos
         {
@@ -22,16 +21,9 @@ namespace UnityEngine.Timeline
             set { m_Clip_Rot = value; }
         }
 
-        //public TrackAsset track
-        //{
-        //    get { return m_Track; }
-        //    set { m_Track = value; }
-        //}
-
         public bool IsValid()
         {
-            return
-                m_Clip_Pos != null &&
+            return m_Clip_Pos != null &&
                 m_Clip_Rot != null;
         }
 

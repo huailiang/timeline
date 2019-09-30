@@ -2,9 +2,8 @@
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class BoneFxBehaviour : PlayableBehaviour
+public class BoneFxBehaviour : XPlayableBehaviour
 {
-    PlayableDirector _director;
     PlayableBinding _bindPb, _currPb;
     ParticleSystem[] _particles;
     string _prefab;
@@ -12,37 +11,35 @@ public class BoneFxBehaviour : PlayableBehaviour
     Transform _target;
     Transform _fx_root;
     GameObject _fx_obj;
-    Vector3 _pos, _rot,_scale;
+    Vector3 _pos, _rot, _scale;
 
-    public void Set(PlayableDirector dir, 
-        string prefab, 
-        string fxpath, 
-        Vector3 pos, 
-        Vector3 rot, 
-        Vector3 scale)
+    protected override void OnInitial()
     {
-        _director = dir;
-        _prefab = prefab;
-        _pos = pos;
-        _rot = rot;
-        _scale = scale;
-        _fx_path = fxpath;
+        base.OnInitial();
+        BoneFxAsset bAsset = asset as BoneFxAsset;
+        _prefab = bAsset.prefab;
+        _pos = bAsset.pos;
+        _rot = bAsset.rot;
+        _scale = bAsset.scale;
+        _fx_path = bAsset.fxPath;
     }
+
+
 
     public override void OnGraphStart(Playable playable) { }
 
     public override void OnBehaviourPlay(Playable playable, FrameData info)
     {
-        var bind = _director.GetGenericBinding(_bindPb.sourceObject);
-        if(bind is Animator)
+        var bind = DirectorSystem.Director.GetGenericBinding(_bindPb.sourceObject);
+        if (bind is Animator)
         {
             _target = (bind as Animator).transform;
         }
-        else if(bind is GameObject)
+        else if (bind is GameObject)
         {
             _target = (bind as GameObject).transform;
         }
-        else if(bind is Animation)
+        else if (bind is Animation)
         {
             _target = (bind as Animation).transform;
         }
@@ -63,7 +60,7 @@ public class BoneFxBehaviour : PlayableBehaviour
                 }
 #endif
                 _fx_obj = TimelineUtil.Load<GameObject>(_prefab, _fx_root, Vector3.zero, Quaternion.identity);
-                 //_fx_obj;
+                //_fx_obj;
                 _particles = _fx_obj.GetComponentsInChildren<ParticleSystem>();
                 _fx_obj.transform.parent = _fx_root;
                 _fx_obj.transform.localPosition = _pos;
@@ -107,6 +104,5 @@ public class BoneFxBehaviour : PlayableBehaviour
             _fx_obj = null;
         }
     }
-    
 
 }

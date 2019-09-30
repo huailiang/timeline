@@ -1,5 +1,4 @@
 ﻿using UnityEditor;
-using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
 {
@@ -22,7 +21,7 @@ namespace UnityEngine.Timeline
             }
             return path;
         }
-        
+
 
         public override void OnInspectorGUI()
         {
@@ -60,15 +59,11 @@ namespace UnityEngine.Timeline
             }
             else if (!string.IsNullOrEmpty(asset.fxPath))
             {
-                if (asset.track != null)
+                GameObject go = asset.GetBind();
+                if (go)
                 {
-                    var binding = DirectorSystem.Director.GetGenericBinding(asset.track);
-                    Transform tf = DirectorSystem.FetchAttachOfTrack(asset.track);
-                    if (tf)
-                    {
-                        tf = tf.GetChild(0).Find(asset.fxPath);
-                        if (tf) boneGo = tf.gameObject;
-                    }
+                    var tf = go.transform.GetChild(0).Find(asset.fxPath);
+                    if (tf) boneGo = tf.gameObject;
                 }
             }
             DrawTransform();

@@ -28,6 +28,11 @@ namespace UnityEngine.Timeline
             bindObj = obj;
         }
 
+        public GameObject GetBind()
+        {
+            return bindObj;
+        }
+
         public void SetBind(Transform tf)
         {
             if (tf)
