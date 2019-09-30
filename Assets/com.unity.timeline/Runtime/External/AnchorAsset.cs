@@ -40,11 +40,8 @@ namespace UnityEngine.Timeline
                 for (int i = 0; i < CURVE_CNT; i++)
                 {
                     m_Clip_Pos[i] = new AnimationCurve();
-                    ReadCurve(reader, keyCount, (t, v) => m_Clip_Pos[i].AddKey(t, v));
-                }
-                for (int i = 0; i < CURVE_CNT; i++)
-                {
                     m_Clip_Rot[i] = new AnimationCurve();
+                    ReadCurve(reader, keyCount, (t, v) => m_Clip_Pos[i].AddKey(t, v));
                     ReadCurve(reader, keyCount, (t, v) => m_Clip_Rot[i].AddKey(t, v));
                 }
             }
