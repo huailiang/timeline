@@ -9,7 +9,21 @@ using UnityEngine.Timeline;
 public class TimelineTool
 {
 
-    [MenuItem("XEditor/Save _F2", priority = 2)]
+    [MenuItem("Tool/ClearBinding _F3")]
+    public static void ClearBinding()
+    {
+        var director = GameObject.FindObjectOfType<PlayableDirector>();
+        SerializedObject serializedObject = new SerializedObject(director);
+        SerializedProperty sp = serializedObject.FindProperty("m_SceneBindings");
+        if (sp != null)
+        {
+            sp.arraySize = 0;
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+
+
+    [MenuItem("Tool/SaveBytes _F2")]
     public static void Save()
     {
         var director = GameObject.FindObjectOfType<PlayableDirector>();
