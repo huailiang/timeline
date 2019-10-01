@@ -29,7 +29,7 @@ XDirectorAsset和XTrackAsset使用我们自己的bytes文件填充，所以编�
 
 ### 预览Graph
 
-强烈建议使用Unity官方的一个Plugin叫做graph-visualizer，来预览playable之间的结构关系，也是为了排错。比如说如果一个节点没有output， 对应的behavior的prepare是不会触发的。
+强烈建议使用Unity官方的一个Plugin叫做[graph-visualizer][i1]，来预览playable之间的结构关系，也是为了排错。比如说如果一个节点没有output， 对应的behavior的prepare是不会触发的。
 
 注意： graph-visualizer 目前只是支持实时预览， 暂不能edit和debug。
 
@@ -45,7 +45,7 @@ XDirectorAsset和XTrackAsset使用我们自己的bytes文件填充，所以编�
 ```csharp
 class BoneFxAsset : XPlayableAsset<BoneFxBehaviour>, IDirectorIO
 {
-	[SerializeField] public string prefab;
+   [SerializeField] public string prefab;
 
     public void Load(BinaryReader reader)
     {
@@ -82,3 +82,6 @@ public class BoneFxBehaviour : XPlayableBehaviour
     }
 }
 ```
+
+
+[i1]: https://github.com/Unity-Technologies/graph-visualizer
