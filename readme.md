@@ -45,20 +45,20 @@ XDirectorAsset和XTrackAsset使用我们自己的bytes文件填充，所以编�
 ```csharp
 class BoneFxAsset : XPlayableAsset<BoneFxBehaviour>, IDirectorIO
 {
-		[SerializeField] public string prefab;
+	[SerializeField] public string prefab;
 
-        public void Load(BinaryReader reader)
-        {
-        	// load from .bytes file
-        	prefab = reader.ReadString();
-        }
+    public void Load(BinaryReader reader)
+    {
+    	// load from .bytes file
+    	prefab = reader.ReadString();
+    }
 
 
-        public void Write(BinaryWriter writer)
-        {
-            // save to .bytes file
-            writer.Write(prefab);
-        }
+    public void Write(BinaryWriter writer)
+    {
+        // save to .bytes file
+        writer.Write(prefab);
+    }
  }
 ```
 
@@ -69,7 +69,6 @@ public class BoneFxBehaviour : XPlayableBehaviour
 {
 
     string _prefab;
-
 
     protected override void OnInitial()
     {
