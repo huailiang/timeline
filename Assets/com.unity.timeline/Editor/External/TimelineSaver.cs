@@ -141,6 +141,11 @@ public class TimelineSaver
         }
     }
 
+
+    /// <summary>
+    /// 这里主要是为了给导出的track 按照树的结果自上而下排序
+    /// </summary>
+    /// <param name="track"></param>
     private static void AnalyTrack(TrackAsset track)
     {
         var childs = track.GetChildTracks();

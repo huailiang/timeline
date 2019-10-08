@@ -45,10 +45,19 @@ namespace UnityEngine.Timeline
 
         public static bool TrackTypeSupportsNotifications(Type type)
         {
-            var binding = (TrackBindingTypeAttribute)Attribute.GetCustomAttribute(type, typeof(TrackBindingTypeAttribute));
-            return binding != null &&
-                (typeof(Component).IsAssignableFrom(binding.type) ||
-                    typeof(GameObject).IsAssignableFrom(binding.type));
+
+            if (Application.isPlaying)
+            {
+                // runtime processed with bytes 
+                return true;
+            }
+            else
+            {
+                var binding = (TrackBindingTypeAttribute)Attribute.GetCustomAttribute(type, typeof(TrackBindingTypeAttribute));
+                return binding != null &&
+                    (typeof(Component).IsAssignableFrom(binding.type) ||
+                        typeof(GameObject).IsAssignableFrom(binding.type));
+            }
         }
     }
 }

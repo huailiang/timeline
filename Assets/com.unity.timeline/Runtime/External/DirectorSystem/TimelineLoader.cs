@@ -24,7 +24,6 @@ namespace UnityEngine.Timeline
         {
             DirectorSystem.Director = director;
             director.enabled = false;
-            Debug.Log(director.playableGraph);
             var playableAsset = director.playableAsset;
             if (playableAsset)
             {

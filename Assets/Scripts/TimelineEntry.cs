@@ -113,7 +113,15 @@ public class TimelineEntry : MonoBehaviour
         else if (notification is SlowSignalEmitter)
         {
             SlowSignalEmitter signal = notification as SlowSignalEmitter;
-            director.playableGraph.GetRootPlayable(0).SetSpeed(signal.slowRate);
+            if(director.playableAsset is XDirectorAsset)
+            {
+                XDirectorAsset xda = director.playableAsset as XDirectorAsset;
+                xda.SetSpeed(signal.slowRate);
+            }
+            else
+            {
+                director.playableGraph.GetRootPlayable(0).SetSpeed(signal.slowRate);
+            }
         }
         else if (notification is ActiveSignalEmmiter)
         {

@@ -5,9 +5,10 @@ using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
 {
+
+   
     public class XTrackAsset : TrackAsset
     {
-        
         public Playable playable;
         public PlayableOutput playableOutput;
         public GameObject bindObj;
