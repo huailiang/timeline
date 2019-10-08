@@ -27,6 +27,19 @@ timeline所有推送事件都是通过PlayableOutput.PushNotification 来发射�
 XDirectorAsset和XTrackAsset使用我们自己的bytes文件填充，所以编辑好timeline之后需要记得save对应的bytes。 这个流程可以扩展一下timeline的编辑器很快的完成。
 
 
+### 自定义track
+
+1. BoneFxTrack
+
+不同于controlTrack 这里是用来绑定骨骼特效。 选中clip， 可以在inspector配置对应的骨骼节点和prefab路径，而且支持预览。
+
+![](/img/t4.jpg)
+
+2. AnchorTrack
+
+利用marker做关键帧， 生成动作曲线，用来控制人的位移和旋转。
+
+
 ### 预览Graph
 
 强烈建议使用Unity官方的一个Plugin叫做[graph-visualizer][i1]，来预览playable之间的结构关系，也是为了排错。比如说如果一个节点没有output， 对应的behavior的prepare是不会触发的。
