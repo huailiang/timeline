@@ -9,7 +9,7 @@ namespace UnityEngine.Timeline
     /// </summary>
     [Serializable]
     [NotKeyable]
-    public class ControlPlayableAsset : PlayableAsset, IPropertyPreview, ITimelineClipAsset
+    public partial class ControlPlayableAsset : PlayableAsset, IPropertyPreview, ITimelineClipAsset
     {
         const int k_MaxRandInt = 10000;
         static readonly List<PlayableDirector> k_EmptyDirectorsList = new List<PlayableDirector>(0);

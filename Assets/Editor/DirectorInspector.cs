@@ -7,7 +7,6 @@ using System.Linq;
 [CustomEditor(typeof(PlayableDirector))]
 public class DirectorInspector : Editor
 {
-    private PlayableDirector director;
 
     private Color[] gizColors = { Color.red, Color.green, Color.white };
 
@@ -24,21 +23,21 @@ public class DirectorInspector : Editor
 
     private void OnSceneGUI()
     {
+        if (DirectorSystem.Director == null)
+        {
+            DirectorSystem.Director = target as PlayableDirector;
+        }
         DrawAnchors();
     }
 
-
-
+    
     private void DrawAnchors()
     {
         AnchorAsset asset = target as AnchorAsset;
-        if (director == null)
+
+        if (DirectorSystem.Director.playableAsset != null)
         {
-            director = GameObject.FindObjectOfType<PlayableDirector>();
-        }
-        if (director.playableAsset != null)
-        {
-            var list = director.playableAsset.outputs;
+            var list = DirectorSystem.Director.playableAsset.outputs;
             int idx = 0;
             foreach (PlayableBinding pb in list)
             {

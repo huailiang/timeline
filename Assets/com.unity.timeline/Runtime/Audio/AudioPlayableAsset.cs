@@ -15,7 +15,7 @@ namespace UnityEngine.Timeline
 #if UNITY_EDITOR
     [DisplayName("Audio Clip")]
 #endif
-    public class AudioPlayableAsset : PlayableAsset, ITimelineClipAsset
+    public partial class AudioPlayableAsset : PlayableAsset, ITimelineClipAsset
     {
         [SerializeField] AudioClip m_Clip;
 #pragma warning disable 649 //Field is never assigned to and will always have its default value

@@ -23,11 +23,12 @@ public class TimelineTool
     }
 
 
-    [MenuItem("Tool/SaveBytes _F2")]
+    [MenuItem("Tool/Save _F2")]
     public static void Save()
     {
         var director = GameObject.FindObjectOfType<PlayableDirector>();
         TimelineSaver.Save(director);
+        ExportDirectorRecord();
     }
 
     private static void Export<T>(IEnumerable<T> assets, Action<T> action)
@@ -65,20 +66,7 @@ public class TimelineTool
         EditorUtility.DisplayDialog("note", "export anim job done", "ok");
     }
 
-
-    public static void ExportRecord()
-    {
-        var sel = Selection.activeObject;
-        if (sel != null)
-        {
-            if (sel is TimelineAsset)
-            {
-                TimelineAsset asset = sel as TimelineAsset;
-                ExportRecord(asset);
-            }
-        }
-    }
-
+    
 
     private static void ExportRecord(TimelineAsset asset)
     {
@@ -99,6 +87,51 @@ public class TimelineTool
                 EditorUtility.CopySerializedIfDifferent(clip, newClip);
                 AssetDatabase.CreateAsset(newClip, path + "/" + asset.name + "_" + clip.name + ".anim");
             }
+        }
+    }
+    
+    public static void ExportDirectorRecord()
+    {
+        PlayableDirector playable = GameObject.FindObjectOfType<PlayableDirector>();
+        if (playable != null)
+        {
+            TimelineAsset asset = playable.playableAsset as TimelineAsset;
+            if (asset != null)
+            {
+                AssetDatabase.SaveAssets();
+                var tracks = asset.GetRootTracks().Where(x => x is AnimationTrack);
+                Dictionary<string, AnimationClip> dic = new Dictionary<string, AnimationClip>();
+                foreach (var it in tracks)
+                {
+                    var tf = DirectorSystem.FetchAttachOfTrack(it);
+                    if (tf && tf.gameObject.GetComponent<Animator>())
+                    {
+                        Debug.Log(tf.name);
+                        AnimationTrack atrack = it as AnimationTrack;
+                        if (atrack.infiniteClip != null)
+                            dic.Add(tf.name, atrack.infiniteClip);
+                    }
+                }
+                string prefix = "Assets/Resources/Animation/";
+
+                foreach (var it in dic)
+                {
+                    AnimationClip newClip = new AnimationClip();
+                    EditorUtility.CopySerializedIfDifferent(it.Value, newClip);
+                    string path = prefix + it.Key + ".anim";
+                    Debug.Log(path);
+                    AssetDatabase.CreateAsset(newClip, path);
+                }
+                AssetDatabase.Refresh();
+            }
+            else
+            {
+                Debug.LogError("timeline asset is null");
+            }
+        }
+        else
+        {
+            Debug.Log("not found director in the scene");
         }
     }
 

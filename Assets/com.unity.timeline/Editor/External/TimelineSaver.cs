@@ -71,16 +71,17 @@ public class TimelineSaver
         string bind = bindObj ? bindObj.name : "";
         bw.Write(bind);
 
-        Debug.Log("track: " + " " + type + " " + parent + " " + bind + " " + (track.end - track.start));
+        Debug.Log("track: " + " " + type + " " + parent + " " + bind);
 
         //track clips
         track.SortClips();
         var clips = track.GetClips();
-        bw.Write(clips.Count());
+        bw.Write(IsinfiniteClip(track) ? 1 : clips.Count());
         foreach (var it in clips)
         {
             SaveClip(it, bw);
         }
+        SaveinfiniteClip(track, bw);
 
         //track markers
         var markers = track.GetMarkers();
@@ -88,6 +89,29 @@ public class TimelineSaver
         foreach (var it in markers)
         {
             SaveMarker(it, bw);
+        }
+    }
+
+    private static bool IsinfiniteClip(TrackAsset track)
+    {
+        AnimationTrack atrack = track as AnimationTrack;
+        return (atrack != null && atrack.infiniteClip != null);
+    }
+
+    private static void SaveinfiniteClip(TrackAsset track, BinaryWriter bw)
+    {
+        if (IsinfiniteClip(track))
+        {
+            AnimationTrack atrack = track as AnimationTrack;
+            var clip = atrack.infiniteClip;
+            bw.Write(0d);
+            bw.Write(0d);
+            bw.Write(DirectorSystem.Director.duration);
+            bw.Write(1.0d);
+            bw.Write(0d);
+            bw.Write(0d);
+            bw.Write(0d);
+            bw.Write(0d);
         }
     }
 

@@ -11,7 +11,7 @@ namespace UnityEngine.Timeline
 #if UNITY_EDITOR
     [DisplayName("Activation Clip")]
 #endif
-    class ActivationPlayableAsset : PlayableAsset, ITimelineClipAsset
+    partial class ActivationPlayableAsset : PlayableAsset, ITimelineClipAsset
     {
         /// <summary>
         /// Returns a description of the features supported by activation clips

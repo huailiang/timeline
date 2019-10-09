@@ -129,6 +129,7 @@ namespace UnityEngine.Timeline
             int type = reader.ReadInt32();
             int parent = reader.ReadInt32();
             Marker marker = DirectorSystem.CreateMarker((MarkType)type);
+            marker.time = time;
             if (marker is IDirectorIO)
             {
                 var io = marker as IDirectorIO;
@@ -136,6 +137,7 @@ namespace UnityEngine.Timeline
             }
             if (marker)
             {
+                (marker as IMarker).Initialize(track);
                 track.AddMarker(marker);
             }
         }
