@@ -44,6 +44,7 @@ namespace UnityEngine.Timeline
 
         public static void Write(BinaryWriter writer, string path)
         {
+            writer.Write(true);
             writer.Write(path);
             writer.Write((short)LoopMode.Off);
             writer.Write(false);
