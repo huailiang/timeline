@@ -261,7 +261,7 @@ namespace UnityEditor.Timeline
 
             bool addenu = true;
             var attr = Attribute.GetCustomAttribute(type, typeof(TrackAttribute)) as TrackAttribute;
-            if (attr != null) addenu = !attr.onlyInSub;
+            if (attr != null) addenu = !attr.notAutoAddMenu;
 
             if (addenu)
                 AddCommandToMenu(menu, name, lastMethod, type, !disabled);

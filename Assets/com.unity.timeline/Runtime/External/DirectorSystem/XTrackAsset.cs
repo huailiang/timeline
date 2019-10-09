@@ -6,7 +6,7 @@ using UnityEngine.Playables;
 namespace UnityEngine.Timeline
 {
 
-   
+    [TrackAttribute(true)]
     public class XTrackAsset : TrackAsset
     {
         public Playable playable;

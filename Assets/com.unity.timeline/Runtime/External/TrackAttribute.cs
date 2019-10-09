@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace UnityEngine.Timeline
 {
-    
+
     [AttributeUsage(AttributeTargets.Class)]
     public class TrackAttribute : Attribute
     {
-        public bool onlyInSub;
+        public bool notAutoAddMenu;
 
 
-        public TrackAttribute(bool onlySub)
+        public TrackAttribute(bool hide)
         {
-            onlyInSub = onlySub;
+            notAutoAddMenu = hide;
         }
 
     }
