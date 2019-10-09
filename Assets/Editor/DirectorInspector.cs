@@ -8,6 +8,7 @@ using System.Linq;
 public class DirectorInspector : Editor
 {
     private PlayableDirector director;
+
     private Color[] gizColors = { Color.red, Color.green, Color.white };
 
     [MenuItem("Tool/SelectDirector _F1")]
@@ -25,6 +26,7 @@ public class DirectorInspector : Editor
     {
         DrawAnchors();
     }
+
 
 
     private void DrawAnchors()

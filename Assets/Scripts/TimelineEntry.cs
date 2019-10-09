@@ -66,7 +66,7 @@ public class TimelineEntry : MonoBehaviour
                 string path = Application.dataPath + "/Res/TIMELINE.bytes";
                 loader.Load(path, director);
                 if (director.playableGraph.IsValid())
-                {    
+                {
                     //director.RebuildGraph();
                     director.Play();
                 }
@@ -91,6 +91,27 @@ public class TimelineEntry : MonoBehaviour
         }
     }
 
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        DrawCamera();
+    }
+
+    private void DrawCamera()
+    {
+        Camera camera = Camera.main;
+
+        Gizmos.matrix = Matrix4x4.TRS(camera.transform.position,
+        camera.transform.rotation,
+        Vector3.one);
+
+        Gizmos.DrawFrustum(Vector3.zero,
+        camera.fieldOfView,
+        camera.farClipPlane,
+        camera.nearClipPlane,
+        camera.aspect);
+    }
+
     public void JumpTo(float time)
     {
         Debug.Log("jump to:" + time);
@@ -113,7 +134,7 @@ public class TimelineEntry : MonoBehaviour
         else if (notification is SlowSignalEmitter)
         {
             SlowSignalEmitter signal = notification as SlowSignalEmitter;
-            if(director.playableAsset is XDirectorAsset)
+            if (director.playableAsset is XDirectorAsset)
             {
                 XDirectorAsset xda = director.playableAsset as XDirectorAsset;
                 xda.SetSpeed(signal.slowRate);
