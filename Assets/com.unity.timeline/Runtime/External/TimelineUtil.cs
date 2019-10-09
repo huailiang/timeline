@@ -1,5 +1,4 @@
 ﻿using UnityEngine.Playables;
-using UnityEngine;
 
 namespace UnityEngine.Timeline
 {
@@ -96,17 +95,7 @@ namespace UnityEngine.Timeline
             }
             return null;
         }
-
-        public static T Load<T>(string location, Transform parent, Vector3 pos, Quaternion rot) where T : Object
-        {
-            if (m_Interface != null)
-                return m_Interface.Load<T>(location, parent, pos, rot);
-            else
-            {
-                Debug.LogWarning("timeline interface is null");
-                return default(T);
-            }
-        }
+        
 
     }
 

@@ -3,6 +3,11 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 
+public class TimelineImp : IInterface
+{
+    public NotifyDelegate notify { get; set; }
+}
+
 [ExecuteInEditMode]
 public class TimelineEntry : MonoBehaviour
 {

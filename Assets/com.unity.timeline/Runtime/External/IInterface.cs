@@ -10,11 +10,7 @@ namespace UnityEngine.Timeline
     {
 
         NotifyDelegate notify { get; set; }
-
-        T Load<T>(string location) where T : Object;
-
-
-       T Load<T>(string location, Transform parent, Vector3 pos, Quaternion rot) where T : Object;
-
+        
     }
+    
 }

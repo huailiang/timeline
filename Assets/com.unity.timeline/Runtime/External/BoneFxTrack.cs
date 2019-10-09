@@ -11,6 +11,22 @@
         {
             clip.duration = 2f;
             base.OnCreateClip(clip);
+            ProcessClip(clip);
+        }
+
+
+        protected override void OnAfterTrackDeserialize()
+        {
+            base.OnAfterTrackDeserialize();
+            foreach (var clip in GetClips())
+            {
+                ProcessClip(clip);
+            }
+        }
+
+
+        private void ProcessClip(TimelineClip clip)
+        {
             BoneFxAsset asset = clip.asset as BoneFxAsset;
             var bind = DirectorSystem.FetchAttachOfTrack(this);
             asset.SetBind(bind);
@@ -19,4 +35,5 @@
 
 
     }
+
 }

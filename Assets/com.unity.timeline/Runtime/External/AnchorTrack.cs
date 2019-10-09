@@ -14,6 +14,13 @@ namespace UnityEngine.Timeline
         AnimationCurve[] m_curves_pos = null;
         AnimationCurve[] m_curves_rot = null;
 
+
+        protected override void OnCreateClip(TimelineClip clip)
+        {
+            base.OnCreateClip(clip);
+            RebuildClip();
+        }
+
         protected override void OnAfterTrackDeserialize()
         {
             base.OnAfterTrackDeserialize();

@@ -13,11 +13,16 @@ namespace UnityEngine.Timeline
 
         string GetRootFullPath(Transform tf)
         {
-            string path = tf.name;
-            while (tf.parent != null && tf.name != "root")
+            string path = "";
+            while (true)
             {
-                tf = tf.parent;
-                path = tf.name + "/" + path;
+                if (tf.parent)
+                {
+                    if (!string.IsNullOrEmpty(path)) path = "/" + path;
+                    path = tf.name + path;
+                    tf = tf.parent;
+                }
+                else break;
             }
             return path;
         }
@@ -31,16 +36,15 @@ namespace UnityEngine.Timeline
             if (prefabGo != null)
             {
                 string path = AssetDatabase.GetAssetPath(prefabGo);
-                asset.prefab = path.Replace("Assets/Res/", string.Empty).Replace(".prefab", string.Empty);
-                if (!path.Contains("Res") || !path.EndsWith(".prefab"))
+                asset.prefab = path.Replace("Assets/Resources/", string.Empty).Replace(".prefab", string.Empty);
+                if (!path.EndsWith(".prefab"))
                 {
                     EditorGUILayout.HelpBox("The fx that you selected is invalid", MessageType.Error);
                 }
             }
             if (boneGo == null && !string.IsNullOrEmpty(asset.prefab))
             {
-                string path = "Assets/Res/" + asset.prefab + ".prefab";
-                prefabGo = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                prefabGo = Resources.Load<GameObject>(asset.prefab);
                 if (prefabGo == null)
                 {
                     EditorGUILayout.HelpBox("AssetPath is invalid", MessageType.Error);
@@ -52,7 +56,7 @@ namespace UnityEngine.Timeline
             if (boneGo != null)
             {
                 asset.fxPath = GetRootFullPath(boneGo.transform);
-                if (string.IsNullOrEmpty(asset.fxPath) || !asset.fxPath.StartsWith("root"))
+                if (string.IsNullOrEmpty(asset.fxPath))
                 {
                     EditorGUILayout.HelpBox("Avatar bone transform is invalid", MessageType.Error);
                 }

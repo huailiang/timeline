@@ -7,7 +7,7 @@ namespace UnityEngine.Timeline
 {
 
     [TrackAttribute(true)]
-    public class XTrackAsset : TrackAsset
+    public class XRuntimeTrackAsset : TrackAsset
     {
         public Playable playable;
         public PlayableOutput playableOutput;
@@ -51,7 +51,7 @@ namespace UnityEngine.Timeline
             {
                 if (parentIndex >= 0)
                 {
-                    XTrackAsset pTrack = playable.TrackAssets[parentIndex];
+                    XRuntimeTrackAsset pTrack = playable.TrackAssets[parentIndex];
                     this.parent = pTrack;
                     int cnt = m_Clips.Count;
                     for (int i = 0; i < cnt; i++)

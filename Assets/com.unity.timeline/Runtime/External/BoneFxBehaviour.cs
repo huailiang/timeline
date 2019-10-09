@@ -8,7 +8,6 @@ public class BoneFxBehaviour : XPlayableBehaviour
     ParticleSystem[] _particles;
     string _prefab;
     string _fx_path;
-    Transform _target;
     Transform _fx_root;
     GameObject _fx_obj;
     Vector3 _pos, _rot, _scale;
@@ -30,27 +29,13 @@ public class BoneFxBehaviour : XPlayableBehaviour
 
     public override void OnBehaviourPlay(Playable playable, FrameData info)
     {
-        var bind = DirectorSystem.Director.GetGenericBinding(_bindPb.sourceObject);
-        if (bind is Animator)
+        if (bindObj != null && _fx_obj == null)
         {
-            _target = (bind as Animator).transform;
-        }
-        else if (bind is GameObject)
-        {
-            _target = (bind as GameObject).transform;
-        }
-        else if (bind is Animation)
-        {
-            _target = (bind as Animation).transform;
-        }
-        if (_target != null && _fx_obj == null)
-        {
-            _fx_root = _target.transform.Find(_fx_path);
+            _fx_root = bindObj.transform.Find(_fx_path);
             if (_fx_root != null)
             {
-                string hash = "fx" + _prefab.GetHashCode().ToString();
 #if UNITY_EDITOR
-                Transform tf = _fx_root.Find(hash);
+                Transform tf = _fx_root.Find(_prefab+ "(Clone)");
                 if (tf != null)
                 {
                     if (Application.isPlaying)
@@ -59,14 +44,13 @@ public class BoneFxBehaviour : XPlayableBehaviour
                         GameObject.DestroyImmediate(tf.gameObject);
                 }
 #endif
-                _fx_obj = TimelineUtil.Load<GameObject>(_prefab, _fx_root, Vector3.zero, Quaternion.identity);
-                //_fx_obj;
+                var obj = Resources.Load<GameObject>(_prefab);
+                _fx_obj = GameObject.Instantiate(obj) as GameObject;
                 _particles = _fx_obj.GetComponentsInChildren<ParticleSystem>();
                 _fx_obj.transform.parent = _fx_root;
                 _fx_obj.transform.localPosition = _pos;
                 _fx_obj.transform.localRotation = Quaternion.Euler(_rot);
                 _fx_obj.transform.localScale = _scale;
-                _fx_obj.name = hash.ToString();
             }
         }
         if (_particles != null)
