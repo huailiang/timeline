@@ -11,7 +11,8 @@ namespace UnityEngine.Timeline
     [Serializable]
     [TrackClipType(typeof(AudioPlayableAsset), false)]
     [TrackBindingType(typeof(AudioSource))]
-    public class AudioTrack : TrackAsset
+    [TrackAttribute(false)]
+    public class AudioTrack : XTrackAsset
     {
         [SerializeField]
         AudioMixerProperties m_TrackProperties = new AudioMixerProperties();

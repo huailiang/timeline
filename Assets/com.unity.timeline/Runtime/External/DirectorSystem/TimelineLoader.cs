@@ -58,7 +58,7 @@ namespace UnityEngine.Timeline
             var dur = reader.ReadDouble();
             asset.SetDuration(dur);
             int cnt = reader.ReadInt32();
-            asset.TrackAssets = new XRuntimeTrackAsset[cnt];
+            asset.TrackAssets = new XTrackAsset[cnt];
             for (int i = 0; i < cnt; i++)
             {
                 LoadTrack(reader, ref asset.TrackAssets[i], director);
@@ -67,10 +67,11 @@ namespace UnityEngine.Timeline
         }
 
 
-        private void LoadTrack(BinaryReader reader, ref XRuntimeTrackAsset track, PlayableDirector director)
+        private void LoadTrack(BinaryReader reader, ref XTrackAsset track, PlayableDirector director)
         {
-            track = ScriptableObject.CreateInstance<XRuntimeTrackAsset>();
-            track.Load(reader);
+            var type = (TrackType)reader.ReadInt32();
+            track = DirectorSystem.CreateTrack(type);
+            track.Load(reader, type);
 
             string bind = reader.ReadString();
             if (!string.IsNullOrEmpty(bind))
@@ -93,12 +94,10 @@ namespace UnityEngine.Timeline
             {
                 LoadMarker(reader, track);
             }
-
-            Debug.Log(track);
         }
 
 
-        private void LoadClip(BinaryReader reader, XRuntimeTrackAsset track)
+        private void LoadClip(BinaryReader reader, XTrackAsset track)
         {
             PlayableAsset asset = DirectorSystem.CreateClipAsset(track.trackType);
             TimelineClip clip = track.CreateClip(asset);
@@ -123,7 +122,7 @@ namespace UnityEngine.Timeline
         }
 
 
-        private void LoadMarker(BinaryReader reader, XRuntimeTrackAsset track)
+        private void LoadMarker(BinaryReader reader, XTrackAsset track)
         {
             double time = reader.ReadDouble();
             int type = reader.ReadInt32();

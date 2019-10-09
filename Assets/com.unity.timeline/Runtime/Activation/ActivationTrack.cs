@@ -9,6 +9,7 @@ namespace UnityEngine.Timeline
     [Serializable]
     [TrackClipType(typeof(ActivationPlayableAsset))]
     [TrackBindingType(typeof(GameObject))]
+    [TrackAttribute(false)]
     public class ActivationTrack : TrackAsset
     {
         [SerializeField]

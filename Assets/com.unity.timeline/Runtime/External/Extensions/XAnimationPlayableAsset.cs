@@ -9,6 +9,7 @@ namespace UnityEngine.Timeline
 {
     public partial class AnimationPlayableAsset : IDirectorIO
     {
+
         public void Load(BinaryReader reader)
         {
             bool ext = reader.ReadBoolean();
@@ -41,8 +42,13 @@ namespace UnityEngine.Timeline
 #endif
         }
 
+        public static void Write(BinaryWriter writer, string path)
+        {
+            writer.Write(path);
+            writer.Write((short)LoopMode.Off);
+            writer.Write(false);
+        }
 
     }
-
 
 }

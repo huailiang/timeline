@@ -143,14 +143,15 @@ namespace UnityEngine.Timeline
             var bindings = track.outputs;
             foreach (var binding in bindings)
             {
-                var playableOutput = binding.CreateOutput(graph);
+                PlayableOutput playableOutput = binding.CreateOutput(graph);
                 playableOutput.SetReferenceObject(binding.sourceObject);
                 playableOutput.SetSourcePlayable(playable);
                 playableOutput.SetSourceOutputPort(port);
                 playableOutput.SetWeight(1.0f);
+                
 
                 // only apply this on our animation track
-                if (track as AnimationTrack != null)
+               if(IsAnimaTrack(track))// if (track as AnimationTrack != null )
                     EvaluateWeightsForAnimationPlayableOutput(track, (AnimationPlayableOutput)playableOutput);
                 if (playableOutput.IsPlayableOutputOfType<AudioPlayableOutput>())
                     ((AudioPlayableOutput)playableOutput).SetEvaluateOnSeek(!muteAudioScrubbing);
@@ -166,6 +167,18 @@ namespace UnityEngine.Timeline
                 //    }
                 //}
             }
+        }
+
+        bool IsAnimaTrack(TrackAsset track)
+        {
+            if (track is AnimationTrack)
+                return true;
+            XTrackAsset xtrack = track as XTrackAsset;
+            if (xtrack)
+            {
+                return xtrack.trackType == TrackType.ANIMTION;
+            }
+            return false;
         }
 
         void EvaluateWeightsForAnimationPlayableOutput(TrackAsset track, AnimationPlayableOutput animOutput)

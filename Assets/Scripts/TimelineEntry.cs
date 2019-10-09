@@ -3,29 +3,26 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 
-public class TimelineImp : IInterface
-{
-    public NotifyDelegate notify { get; set; }
-}
 
 [ExecuteInEditMode]
-public class TimelineEntry : MonoBehaviour
+public class TimelineEntry : MonoBehaviour, IInterface
 {
 
     PlayableDirector director;
-    TimelineImp imp;
     TimelineLoader loader;
     private bool backward;
     private GUIStyle style = new GUIStyle();
     private Rect rect = new Rect(20, 20, 150, 40);
 
+    public NotifyDelegate notify { get; set; }
+    
+
     private void Awake()
     {
         director = GetComponent<PlayableDirector>();
         DirectorSystem.Director = director;
-        imp = new TimelineImp();
-        TimelineUtil.Interface = imp;
-        imp.notify = OnNotify;
+        TimelineUtil.Interface = this;
+        notify = OnNotify;
         backward = false;
         TimelineUtil.playMode = Application.isPlaying ?
             TimelinePlayMode.PREVIEWPLAYING :

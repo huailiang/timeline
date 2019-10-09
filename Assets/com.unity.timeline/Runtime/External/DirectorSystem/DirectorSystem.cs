@@ -73,6 +73,25 @@ namespace UnityEngine.Timeline
         }
 
 
+        public static XTrackAsset CreateTrack(TrackType trackType)
+        {
+            XTrackAsset track;
+            switch (trackType)
+            {
+                case TrackType.ANIMTION:
+                    track = ScriptableObject.CreateInstance<AnimationTrack>();
+                    break;
+                case TrackType.AUDIO:
+                    track = ScriptableObject.CreateInstance<AudioTrack>();
+                    break;
+                default:
+                    track = ScriptableObject.CreateInstance<XTrackAsset>();
+                    break;
+            }
+            return track;
+        }
+
+
         public static PlayableAsset CreateClipAsset(TrackType type)
         {
             PlayableAsset clip = null;

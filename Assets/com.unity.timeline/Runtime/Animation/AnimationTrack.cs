@@ -123,7 +123,8 @@ namespace UnityEngine.Timeline
     [TrackClipType(typeof(AnimationPlayableAsset), false)]
     [TrackBindingType(typeof(Animator))]
     [SupportsChildTracks(typeof(AnimationTrack), 1)]
-    public partial class AnimationTrack : TrackAsset
+    [TrackAttribute(false)]
+    public partial class AnimationTrack : XTrackAsset
     {
         const string k_DefaultInfiniteClipName = "Recorded";
         const string k_DefaultRecordableClipName = "Recorded";

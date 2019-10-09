@@ -58,9 +58,9 @@ public class TimelineSaver
 
     private static void SaveTrack(TrackAsset track, BinaryWriter bw)
     {
-        bw.Write(track.name);
         var type = DirectorSystem.UtilTrackType(track);
         bw.Write((int)type);
+        bw.Write(track.name);
         bw.Write(track.start);
         bw.Write(track.end);
        
@@ -112,6 +112,10 @@ public class TimelineSaver
             bw.Write(0d);
             bw.Write(0d);
             bw.Write(0d);
+            string bind = "";
+            var tf = DirectorSystem.FetchAttachOfTrack(track);
+            bind = tf?.name;
+            AnimationPlayableAsset.Write(bw, "Animation/" + bind);
         }
     }
 

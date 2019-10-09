@@ -9,11 +9,11 @@ namespace UnityEngine.Timeline
 
         private double _duration;
 
-        private XRuntimeTrackAsset[] _trackAssets;
+        private XTrackAsset[] _trackAssets;
 
         private ScriptPlayable<TimelinePlayable> _behaviour;
 
-        public XRuntimeTrackAsset[] TrackAssets
+        public XTrackAsset[] TrackAssets
         {
             get { return _trackAssets; }
             set { _trackAssets = value; }

@@ -7,7 +7,7 @@ namespace UnityEngine.Timeline
 {
 
     [TrackAttribute(true)]
-    public class XRuntimeTrackAsset : TrackAsset
+    public class XTrackAsset : TrackAsset
     {
         public Playable playable;
         public PlayableOutput playableOutput;
@@ -30,10 +30,10 @@ namespace UnityEngine.Timeline
         }
 
 
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, TrackType type)
         {
+            m_TrackType = type;
             name = reader.ReadString();
-            m_TrackType = (TrackType)reader.ReadInt32();
             m_Start = reader.ReadDouble();
             m_End = reader.ReadDouble();
             parentIndex = reader.ReadInt32();
@@ -51,7 +51,7 @@ namespace UnityEngine.Timeline
             {
                 if (parentIndex >= 0)
                 {
-                    XRuntimeTrackAsset pTrack = playable.TrackAssets[parentIndex];
+                    XTrackAsset pTrack = playable.TrackAssets[parentIndex];
                     this.parent = pTrack;
                     int cnt = m_Clips.Count;
                     for (int i = 0; i < cnt; i++)
