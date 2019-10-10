@@ -29,7 +29,7 @@ namespace UnityEngine.Timeline
         public MarkType markType => MarkType.ANCHOR;
 
 
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, XTrackAsset track)
         {
             m_Position = reader.ReadVector3();
             m_Rotation = reader.ReadVector3();

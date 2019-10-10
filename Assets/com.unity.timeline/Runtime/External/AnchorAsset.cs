@@ -30,7 +30,7 @@ namespace UnityEngine.Timeline
 
         #region io
 
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, XTrackAsset track)
         {
             int keyCount = reader.ReadInt32();
             if (keyCount > 0)

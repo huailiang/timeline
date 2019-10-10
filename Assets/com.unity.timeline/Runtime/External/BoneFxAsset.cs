@@ -12,7 +12,7 @@ namespace UnityEngine.Timeline
    
 
 
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, XTrackAsset track)
         {
             pos = reader.ReadVector3();
             rot = reader.ReadVector3();

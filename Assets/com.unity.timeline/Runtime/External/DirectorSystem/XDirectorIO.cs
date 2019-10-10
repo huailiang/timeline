@@ -4,6 +4,17 @@ namespace UnityEngine.Timeline
 {
     public static class BinaryReaderExtend
     {
+        public static Quaternion ReadQuaternion(this BinaryReader reader)
+        {
+            Quaternion quaternion = Quaternion.identity;
+            quaternion.x = reader.ReadSingle();
+            quaternion.y = reader.ReadSingle();
+            quaternion.z = reader.ReadSingle();
+            quaternion.w = reader.ReadSingle();
+            return quaternion;
+        }
+
+
         public static Vector3 ReadVector3(this BinaryReader reader)
         {
             Vector3 vec = Vector3.zero;
@@ -54,6 +65,14 @@ namespace UnityEngine.Timeline
 
     public static class BinaryWriterExtend
     {
+        public static void Write(this BinaryWriter writer, Quaternion rot)
+        {
+            writer.Write(rot.x);
+            writer.Write(rot.y);
+            writer.Write(rot.z);
+            writer.Write(rot.w);
+        }
+
         public static void Write(this BinaryWriter writer, Vector3 vec)
         {
             writer.Write(vec.x);
@@ -88,7 +107,6 @@ namespace UnityEngine.Timeline
             writer.Write(vec.y);
         }
         
-
     }
 
 }

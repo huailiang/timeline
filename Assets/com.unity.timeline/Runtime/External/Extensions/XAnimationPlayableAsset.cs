@@ -10,7 +10,7 @@ namespace UnityEngine.Timeline
     public partial class AnimationPlayableAsset : IDirectorIO
     {
 
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, XTrackAsset track)
         {
             bool ext = reader.ReadBoolean();
             if (ext)
@@ -22,6 +22,12 @@ namespace UnityEngine.Timeline
                 loop = (LoopMode)mode;
 
                 applyFootIK = reader.ReadBoolean();
+                
+                if(track.isRecordMode)
+                {
+                    AnimationTrack atrack = track as AnimationTrack;
+                    atrack.infiniteClip = clip;
+                }
             }
         }
 
@@ -49,6 +55,8 @@ namespace UnityEngine.Timeline
             writer.Write((short)LoopMode.Off);
             writer.Write(false);
         }
+
+        
 
     }
 

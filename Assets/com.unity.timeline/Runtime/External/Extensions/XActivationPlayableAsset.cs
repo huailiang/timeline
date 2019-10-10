@@ -7,7 +7,7 @@ namespace UnityEngine.Timeline
 {
     partial class ActivationPlayableAsset : IDirectorIO
     {
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, XTrackAsset track)
         {
            
         }

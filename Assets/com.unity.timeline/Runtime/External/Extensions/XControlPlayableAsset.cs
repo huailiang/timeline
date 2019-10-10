@@ -9,7 +9,7 @@ namespace UnityEngine.Timeline
     public partial class ControlPlayableAsset : IDirectorIO
     {
 
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, XTrackAsset track)
         {
             string path = reader.ReadString();
             prefabGameObject = Resources.Load<GameObject>(path);

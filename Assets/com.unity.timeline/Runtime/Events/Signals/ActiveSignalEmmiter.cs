@@ -55,7 +55,7 @@ namespace UnityEngine.Timeline
             }
         }
 
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, XTrackAsset track)
         {
             m_active = reader.ReadBoolean();
             m_Retroactive = reader.ReadBoolean();

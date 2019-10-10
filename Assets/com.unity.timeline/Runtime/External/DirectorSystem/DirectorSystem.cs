@@ -7,7 +7,7 @@ namespace UnityEngine.Timeline
 
     public interface IDirectorIO
     {
-        void Load(BinaryReader reader);
+        void Load(BinaryReader reader, XTrackAsset track);
 
 
         void Write(BinaryWriter writer);
@@ -117,6 +117,38 @@ namespace UnityEngine.Timeline
                     break;
             }
             return clip;
+        }
+
+        public static void WriteTrackInfo(BinaryWriter bw, TrackAsset track, TrackType type)
+        {
+            switch (type)
+            {
+                case TrackType.ANIMTION:
+                    AnimationTrack animationTrack = track as AnimationTrack;
+                    bw.Write((short)animationTrack.trackOffset);
+                    bw.Write((short)animationTrack.matchTargetFields);
+                    bw.Write(animationTrack.infiniteClipOffsetPosition);
+                    bw.Write(animationTrack.infiniteClipOffsetRotation);
+                    bw.Write(animationTrack.infiniteClipTimeOffset);
+                    bw.Write(animationTrack.infiniteClipApplyFootIK);
+                    break;
+            }
+        }
+
+        public static void ReadTrackInfo(BinaryReader reader, XTrackAsset track, TrackType type)
+        {
+            switch (type)
+            {
+                case TrackType.ANIMTION:
+                    AnimationTrack animationTrack = track as AnimationTrack;
+                    animationTrack.trackOffset = (TrackOffset)reader.ReadInt16();
+                    animationTrack.matchTargetFields = (MatchTargetFields)reader.ReadInt16();
+                    animationTrack.infiniteClipOffsetPosition = reader.ReadVector3();
+                    animationTrack.infiniteClipOffsetRotation = reader.ReadQuaternion();
+                    animationTrack.infiniteClipTimeOffset = reader.ReadDouble();
+                    animationTrack.infiniteClipApplyFootIK = reader.ReadBoolean();
+                    break;
+            }
         }
 
 

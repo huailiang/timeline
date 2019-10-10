@@ -38,17 +38,17 @@ namespace UnityEngine.Timeline
 
         private void OnPostLoad(PlayableDirector director)
         {
+            TimelineUtil.playMode = TimelinePlayMode.RUNPLAYING;
             var tracks = asset.TrackAssets;
             for (int i = 0; i < tracks.Length; i++)
             {
                 tracks[i].OnPostLoad(asset);
             }
-            
+
             asset.name = director.name;
             asset.SetSpeed(1);
             director.playableAsset = asset;
             director.enabled = true;
-            TimelineUtil.playMode = TimelinePlayMode.RUNPLAYING;
         }
 
 
@@ -80,6 +80,7 @@ namespace UnityEngine.Timeline
                 director.SetGenericBinding(track, bindGo);
                 track.bindObj = bindGo;
             }
+            DirectorSystem.ReadTrackInfo(reader, track, type);
 
             //clips
             int cnt = reader.ReadInt32();
@@ -112,7 +113,7 @@ namespace UnityEngine.Timeline
             if (asset is IDirectorIO)
             {
                 var io = asset as IDirectorIO;
-                io.Load(reader);
+                io.Load(reader, track);
             }
             if (asset is ClipPlayaleAsset)
             {
@@ -132,7 +133,7 @@ namespace UnityEngine.Timeline
             if (marker is IDirectorIO)
             {
                 var io = marker as IDirectorIO;
-                io.Load(reader);
+                io.Load(reader, track);
             }
             if (marker)
             {
@@ -142,4 +143,5 @@ namespace UnityEngine.Timeline
         }
 
     }
+
 }

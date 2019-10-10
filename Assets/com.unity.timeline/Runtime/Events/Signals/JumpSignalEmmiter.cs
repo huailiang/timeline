@@ -50,7 +50,7 @@ namespace UnityEngine.Timeline
             }
         }
 
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, XTrackAsset track)
         {
             jumpTime = reader.ReadSingle();
             m_EmitOnce = reader.ReadBoolean();

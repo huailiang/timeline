@@ -30,7 +30,7 @@ public class TimelineSaver
 
     private static void SaveAsset(TimelineAsset asset)
     {
-        string path = Application.dataPath + "/Res/" + asset.name + ".bytes";
+        string path = Application.dataPath + "/Resources/" + asset.name + ".bytes";
         Debug.Log(path);
         FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
         BinaryWriter bw = new BinaryWriter(fs);
@@ -60,6 +60,7 @@ public class TimelineSaver
     {
         var type = DirectorSystem.UtilTrackType(track);
         bw.Write((int)type);
+        bw.Write(IsinfiniteClip(track));
         bw.Write(track.name);
         bw.Write(track.start);
         bw.Write(track.end);
@@ -70,7 +71,7 @@ public class TimelineSaver
         Object bindObj = director.GetGenericBinding(bindingDict[track.name]);
         string bind = bindObj ? bindObj.name : "";
         bw.Write(bind);
-
+        DirectorSystem.WriteTrackInfo(bw, track, type);
         Debug.Log("track: " + " " + type + " " + parent + " " + bind);
 
         //track clips
@@ -146,7 +147,6 @@ public class TimelineSaver
             type = (marker as IXMarker).markType;
         }
         int parent = m_tracks.IndexOf(marker.parent);
-        Debug.Log("marker: " + type + " " + parent);
         bw.Write(marker.time);
         bw.Write((int)type);
         bw.Write(parent);

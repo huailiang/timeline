@@ -9,7 +9,7 @@ namespace UnityEngine.Timeline
     partial class AudioPlayableAsset : IDirectorIO
     {
 
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, XTrackAsset track)
         {
             string path = reader.ReadString();
             m_Clip = Resources.Load<AudioClip>(path);

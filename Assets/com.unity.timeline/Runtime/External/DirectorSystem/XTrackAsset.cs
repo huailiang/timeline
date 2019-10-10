@@ -13,7 +13,9 @@ namespace UnityEngine.Timeline
         public PlayableOutput playableOutput;
         public GameObject bindObj;
         public int parentIndex;
+        public bool isRecordMode;
         protected TrackType m_TrackType;
+       
 
         public TrackType trackType
         {
@@ -28,11 +30,12 @@ namespace UnityEngine.Timeline
                 yield return ScriptPlayableBinding.Create(name, this, type);
             }
         }
-
-
+        
+        
         public void Load(BinaryReader reader, TrackType type)
         {
             m_TrackType = type;
+            isRecordMode = reader.ReadBoolean();
             name = reader.ReadString();
             m_Start = reader.ReadDouble();
             m_End = reader.ReadDouble();

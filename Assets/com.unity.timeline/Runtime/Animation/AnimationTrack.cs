@@ -296,7 +296,13 @@ namespace UnityEngine.Timeline
         /// </summary>
         public bool inClipMode
         {
-            get { return clips != null && clips.Length != 0; }
+            get
+            {
+                bool hasClip = clips != null && clips.Length != 0;
+                if (TimelineUtil.playMode == TimelinePlayMode.RUNPLAYING)
+                    hasClip &= !isRecordMode;
+                return hasClip;
+            }
         }
 
         /// <summary>
@@ -513,7 +519,7 @@ namespace UnityEngine.Timeline
                 if (animationAsset != null)
                     animationAsset.appliedOffsetMode = mode;
 
-                var source = asset.CreatePlayable(graph, go);
+                Playable source = asset.CreatePlayable(graph, go);
                 if (source.IsValid())
                 {
                     var clip = new RuntimeClip(c, source, mixer);

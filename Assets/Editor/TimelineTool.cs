@@ -48,7 +48,6 @@ public class TimelineTool
         AssetDatabase.Refresh();
     }
 
-
     
 
     /// <summary>
@@ -98,6 +97,7 @@ public class TimelineTool
             TimelineAsset asset = playable.playableAsset as TimelineAsset;
             if (asset != null)
             {
+                playable.time = 0;
                 AssetDatabase.SaveAssets();
                 var tracks = asset.GetRootTracks().Where(x => x is AnimationTrack);
                 Dictionary<string, AnimationClip> dic = new Dictionary<string, AnimationClip>();
@@ -106,10 +106,12 @@ public class TimelineTool
                     var tf = DirectorSystem.FetchAttachOfTrack(it);
                     if (tf && tf.gameObject.GetComponent<Animator>())
                     {
-                        Debug.Log(tf.name);
                         AnimationTrack atrack = it as AnimationTrack;
                         if (atrack.infiniteClip != null)
+                        {
+                            Debug.Log(tf.name + " " + tf.localPosition + " " + tf.localEulerAngles);
                             dic.Add(tf.name, atrack.infiniteClip);
+                        }
                     }
                 }
                 string prefix = "Assets/Resources/Animation/";

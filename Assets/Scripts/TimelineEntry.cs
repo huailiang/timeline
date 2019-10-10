@@ -65,7 +65,7 @@ public class TimelineEntry : MonoBehaviour, IInterface
             if (loader == null) loader = new TimelineLoader();
             if (director)
             {
-                string path = Application.dataPath + "/Res/TIMELINE.bytes";
+                string path = Application.dataPath + "/Resources/TIMELINE.bytes";
                 loader.Load(path, director);
                 if (director.playableGraph.IsValid())
                 {
@@ -89,6 +89,7 @@ public class TimelineEntry : MonoBehaviour, IInterface
     {
         if (director)
         {
+            DirectorSystem.Director = director;
             GUI.Label(rect, "frame: " + (director.time * 30).ToString("f0"), style);
         }
     }
