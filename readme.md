@@ -1,7 +1,14 @@
 # Unity2019 timeline 
 
 
+### Operation
 
+快捷键:
+
+F1: (Tool->SelectDirector) 快速定位到timeline
+F2: (Tool->Save) timeline转bytes 如果有录制record的话，会转成AnimationClip
+F3: (Tool->ClearBinding) 清空timeline track的绑定
+F5: 运行时按下F5, 会加载bytes文件， 不再读.playable
 
 ### timeline支持自定义signal
 
