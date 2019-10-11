@@ -50,6 +50,10 @@ XDirectorAsset和XTrackAsset使用我们自己的bytes文件填充，所以编�
 
 利用marker做关键帧， 生成动作曲线，用来控制人的位移和旋转。
 
+支持record， 在场景里拖拽绑定gameobject就可以直接录制路径，实时绘制并且可以预览轨迹。
+
+录制状态下， 选中anchor track里的关键点，能自动对焦到相应的GameObject， 再也不用在Inspector里选中了。
+
 
 ### 预览Graph
 
