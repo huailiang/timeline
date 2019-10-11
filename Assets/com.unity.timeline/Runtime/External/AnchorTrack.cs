@@ -30,12 +30,10 @@ namespace UnityEngine.Timeline
             {
                 double dtime = director.time;
                 var marks = GetMarkers();
-                bool find = false;
                 foreach (var mark in marks)
                 {
                     if (mark.time == director.time)
                     {
-                        find = true;
                         var anchor = mark as AnchorSignalEmitter;
                         anchor.position = tf.localPosition;
                         anchor.rotation = tf.localEulerAngles;

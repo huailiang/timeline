@@ -50,8 +50,7 @@ namespace UnityEditor.Timeline.Signals
             if (TimelineWindow.instance && bindTf)
             {
                 var state = TimelineWindow.instance.state;
-                bool isRecording = state.recording && state.IsArmedForRecord(anchTrack);
-                if (isRecording)
+                if (state.recording)
                 {
                     Selection.activeObject = bindTf;
                 }
