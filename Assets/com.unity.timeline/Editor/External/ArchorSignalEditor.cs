@@ -5,10 +5,12 @@ using UnityEngine.Timeline;
 
 namespace UnityEditor.Timeline.Signals
 {
+
     [CustomEditor(typeof(AnchorSignalEmitter))]
     public class ArchorSignalEditor : Editor
     {
-        TrackAsset track;
+        TrackAsset parentTrack;
+        AnchorTrack anchTrack;
         AnchorSignalEmitter signal;
         Transform bindTf;
 
@@ -16,8 +18,23 @@ namespace UnityEditor.Timeline.Signals
         {
             PlayableDirector director = GameObject.FindObjectOfType<PlayableDirector>();
             signal = target as AnchorSignalEmitter;
-            track = signal.parent.parent as TrackAsset;
-            bindTf = DirectorSystem.FetchAttachOfTrack(track);
+            anchTrack = signal.parent as AnchorTrack;
+            parentTrack = signal.parent.parent as TrackAsset;
+            bindTf = DirectorSystem.FetchAttachOfTrack(parentTrack);
+
+            if (bindTf)
+            {
+                if (signal.position == Vector3.zero)
+                {
+                    signal.position = bindTf.transform.localPosition;
+                }
+                if (signal.rotation == Vector3.zero)
+                {
+                    signal.rotation = bindTf.transform.localEulerAngles;
+                }
+                TimelineEditor.inspectedDirector.time = signal.time;
+                RecordBindtf();
+            }
         }
 
         public override void OnInspectorGUI()
@@ -25,9 +42,21 @@ namespace UnityEditor.Timeline.Signals
             base.OnInspectorGUI();
             GUILayout.Space(4);
             Execute();
-            GUILayout.Label("try drag transform option");
+            RePaintCurve();
         }
 
+        private void RecordBindtf()
+        {
+            if (TimelineWindow.instance && bindTf)
+            {
+                var state = TimelineWindow.instance.state;
+                bool isRecording = state.recording && state.IsArmedForRecord(anchTrack);
+                if (isRecording)
+                {
+                    Selection.activeObject = bindTf;
+                }
+            }
+        }
 
 
         private void Execute()
@@ -39,5 +68,16 @@ namespace UnityEditor.Timeline.Signals
             }
         }
 
+
+        private void RePaintCurve()
+        {
+            AnchorTrack anTrack = signal.parent as AnchorTrack;
+            if (anTrack)
+            {
+                anTrack.OutputTrackinfo();
+            }
+        }
+
     }
+
 }

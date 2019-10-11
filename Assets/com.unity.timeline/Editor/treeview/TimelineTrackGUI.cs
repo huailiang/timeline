@@ -78,11 +78,11 @@ namespace UnityEditor.Timeline
         static bool DoesTrackAllowsRecording(TrackAsset track)
         {
             // if the root animation track is in auto mode, recording is not allowed
-            var animTrack = TimelineUtility.GetSceneReferenceTrack(track) as AnimationTrack;
+            var rftrack = TimelineUtility.GetSceneReferenceTrack(track);
+            var animTrack = rftrack as AnimationTrack;
             if (animTrack != null)
                 return animTrack.trackOffset != TrackOffset.Auto;
-
-            return false;
+            return rftrack is AnchorTrack;
         }
 
         bool? m_TrackHasAnimatableParameters;

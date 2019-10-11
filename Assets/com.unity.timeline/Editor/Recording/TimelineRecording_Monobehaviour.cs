@@ -45,7 +45,7 @@ namespace UnityEditor.Timeline
         static readonly List<UndoPropertyModification> s_UnprocessedMods = new List<UndoPropertyModification>();
         static readonly List<UndoPropertyModification> s_ModsToProcess = new List<UndoPropertyModification>();
         static AnimationTrack s_LastTrackWarning;
-
+        
         public const string kLocalPosition = "m_LocalPosition";
         public const string kLocalRotation = "m_LocalRotation";
         public const string kLocalEulerHint = "m_LocalEulerAnglesHint";
@@ -75,6 +75,7 @@ namespace UnityEditor.Timeline
                 // grab the clip we need to apply to
                 var modifiedGO = GetGameObjectFromModification(modification);
                 var track = GetTrackForGameObject(modifiedGO, state);
+                SyncToAnchorTrack(modifiedGO, state);
                 if (track != null)
                 {
                     IsRecordingAnimationTrack = true;

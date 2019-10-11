@@ -797,7 +797,7 @@ namespace UnityEditor.Timeline
         /// <summary>
         /// Shared code for adding a clip to a track
         /// </summary>
-        static void AddClipOnTrack(TimelineClip newClip, TrackAsset parentTrack, double candidateTime, Object assignableObject, WindowState state)
+       public  static void AddClipOnTrack(TimelineClip newClip, TrackAsset parentTrack, double candidateTime, Object assignableObject, WindowState state)
         {
             var playableAsset = newClip.asset as IPlayableAsset;
 

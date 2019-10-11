@@ -27,6 +27,8 @@ namespace UnityEditor.Timeline
                 AnimationCurve[] curves = asset.clip_pos;
                 DrawCurve(rect, curves);
             }
+            clip.start = 0;
+            clip.duration = TimelineEditor.inspectedDirector.duration;
         }
 
 

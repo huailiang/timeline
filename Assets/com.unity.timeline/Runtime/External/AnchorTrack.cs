@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
 {
@@ -13,13 +14,7 @@ namespace UnityEngine.Timeline
         List<AnchorSignalEmitter> signals;
         AnimationCurve[] m_curves_pos = null;
         AnimationCurve[] m_curves_rot = null;
-
-
-        protected override void OnCreateClip(TimelineClip clip)
-        {
-            base.OnCreateClip(clip);
-            RebuildClip();
-        }
+        
 
         protected override void OnAfterTrackDeserialize()
         {
@@ -27,8 +22,39 @@ namespace UnityEngine.Timeline
             OutputTrackinfo();
         }
 
+#if UNITY_EDITOR
+        public void AddOrUpdateMarker(PlayableDirector director, GameObject go)
+        {
+            Transform tf = DirectorSystem.FetchAttachOfTrack(this);
+            if (tf && tf.gameObject == go)
+            {
+                double dtime = director.time;
+                var marks = GetMarkers();
+                bool find = false;
+                foreach (var mark in marks)
+                {
+                    if (mark.time == director.time)
+                    {
+                        find = true;
+                        var anchor = mark as AnchorSignalEmitter;
+                        anchor.position = tf.localPosition;
+                        anchor.rotation = tf.localEulerAngles;
+                        break;
+                    }
+                }
+            }
+        }
 
-        private void OutputTrackinfo()
+        public void CreateAnchor()
+        {
+            var marker = ScriptableObject.CreateInstance<AnchorSignalEmitter>();
+            marker.time = DirectorSystem.Director.time;
+            AddMarker(marker);
+            (marker as IMarker).Initialize(this);
+        }
+#endif
+
+        public void OutputTrackinfo()
         {
             if (signals == null)
             {
@@ -108,7 +134,6 @@ namespace UnityEngine.Timeline
             }
         }
         
-
 
         public AnchorAsset GetAsset()
         {

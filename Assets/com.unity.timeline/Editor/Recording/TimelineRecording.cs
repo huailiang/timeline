@@ -27,6 +27,20 @@ namespace UnityEditor.Timeline
             return null;
         }
 
+        static void SyncToAnchorTrack(GameObject gameObject, WindowState state)
+        {
+            var director = state.editSequence.director;
+            if (director != null)
+            {
+                var outputTracks = state.editSequence.asset.flattenedTracks;
+                var tracks = outputTracks.Where(x => x is AnchorTrack);
+                foreach(var track in tracks)
+                {
+                    (track as AnchorTrack).AddOrUpdateMarker(director, gameObject);
+                }
+            }
+        }
+
         // Gets the appropriate track for a given game object
         static TrackAsset GetTrackForGameObject(GameObject gameObject, WindowState state)
         {

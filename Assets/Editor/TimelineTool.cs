@@ -8,6 +8,24 @@ using UnityEngine.Timeline;
 
 public class TimelineTool
 {
+    [MenuItem("Tool/SelectDirector _F1")]
+    public static void FocusDirector()
+    {
+        GameObject go = GameObject.Find("TIMELINE");
+        if (go != null)
+        {
+            Selection.activeGameObject = go;
+        }
+    }
+
+    
+    [MenuItem("Tool/Save _F2")]
+    public static void Save()
+    {
+        var director = GameObject.FindObjectOfType<PlayableDirector>();
+        TimelineSaver.Save(director);
+        ExportDirectorRecord();
+    }
 
     [MenuItem("Tool/ClearBinding _F3")]
     public static void ClearBinding()
@@ -20,15 +38,6 @@ public class TimelineTool
             sp.arraySize = 0;
             serializedObject.ApplyModifiedProperties();
         }
-    }
-
-
-    [MenuItem("Tool/Save _F2")]
-    public static void Save()
-    {
-        var director = GameObject.FindObjectOfType<PlayableDirector>();
-        TimelineSaver.Save(director);
-        ExportDirectorRecord();
     }
 
     private static void Export<T>(IEnumerable<T> assets, Action<T> action)

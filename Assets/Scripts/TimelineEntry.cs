@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
-
 
 
 [ExecuteInEditMode]
@@ -16,7 +17,6 @@ public class TimelineEntry : MonoBehaviour, IInterface
 
     public NotifyDelegate notify { get; set; }
     
-
     private void Awake()
     {
         director = GetComponent<PlayableDirector>();
@@ -87,17 +87,59 @@ public class TimelineEntry : MonoBehaviour, IInterface
 
     private void OnGUI()
     {
-        if (director)
+        CheckDirector();
+        if (DirectorSystem.Director)
         {
-            DirectorSystem.Director = director;
-            GUI.Label(rect, "frame: " + (director.time * 30).ToString("f0"), style);
+            GUI.Label(rect, "frame: " + (DirectorSystem.Director.time * 30).ToString("f0"), style);
         }
     }
 
-    void OnDrawGizmosSelected()
+    #region gizmos
+    private void OnDrawGizmos()
     {
+        CheckDirector();
+        DrawAnchors();
         Gizmos.color = Color.cyan;
         DrawCamera();
+    }
+
+
+    private void CheckDirector()
+    {
+        if (DirectorSystem.Director == null)
+        {
+            DirectorSystem.Director = GameObject.FindObjectOfType<PlayableDirector>();
+        }
+    }
+
+
+    private void DrawAnchors()
+    {
+        if (DirectorSystem.Director.playableAsset != null)
+        {
+            var list = DirectorSystem.Director.playableAsset.outputs;
+            int idx = 0;
+            foreach (PlayableBinding pb in list)
+            {
+                if (pb.sourceObject is AnchorTrack)
+                {
+                    AnchorTrack tack = pb.sourceObject as AnchorTrack;
+                    DrawAnchorTrack(tack, idx++);
+                }
+            }
+        }
+    }
+
+
+    private void DrawAnchorTrack(AnchorTrack track, int idx)
+    {
+        var clips = track.GetClips();
+        TimelineClip clip = clips.FirstOrDefault();
+        if (clip != null && clip.asset != null)
+        {
+            AnchorAsset asset = clip.asset as AnchorAsset;
+            DrawAnchorAsset(asset, clip.start, clip.end, idx);
+        }
     }
 
     private void DrawCamera()
@@ -114,6 +156,42 @@ public class TimelineEntry : MonoBehaviour, IInterface
         camera.nearClipPlane,
         camera.aspect);
     }
+
+
+    const int sample_cnt = 20;
+    Vector3[] sample_vtx = new Vector3[sample_cnt];
+    Color[] gizColors = { Color.red, Color.green, Color.white };
+
+    private void DrawAnchorAsset(AnchorAsset asset, double start, double end, int idx)
+    {
+        FetchKeys(asset, start, end);
+        if (sample_vtx != null)
+        {
+            Handles.color = gizColors[idx % 3];
+            for (int i = 0; i < sample_cnt - 1; i++)
+            {
+                Handles.DrawLine(sample_vtx[i], sample_vtx[i + 1]);
+            }
+        }
+    }
+
+    private void FetchKeys(AnchorAsset asset, double start, double end)
+    {
+        double dur = end - start;
+        double delta = dur / sample_cnt;
+        if (asset.IsValid())
+        {
+            for (int i = 0; i < sample_cnt; i++)
+            {
+                float time = (float)(start + delta * i);
+                float x = asset.clip_pos[0].Evaluate(time);
+                float y = asset.clip_pos[1].Evaluate(time);
+                float z = asset.clip_pos[2].Evaluate(time);
+                sample_vtx[i] = new Vector3(x, y, z);
+            }
+        }
+    } 
+    #endregion
 
     public void JumpTo(float time)
     {
