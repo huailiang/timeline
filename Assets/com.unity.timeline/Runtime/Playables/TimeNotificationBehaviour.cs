@@ -246,7 +246,7 @@ namespace UnityEngine.Timeline
             if (notify != null)
             {
                 notify(playable, e.payload);
-                e.notificationFired = true;
+                e.notificationFired = e.triggerOnce;
             }
             //output.PushNotification(playable, e.payload);
             //e.notificationFired = true;
